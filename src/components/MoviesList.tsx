@@ -58,7 +58,7 @@ const MovieList: React.FC = () => {
   return (
     <>
       <div className="flex flex-col sm:flex-row sm:justify-between md:gap-80">
-        <h1 className="sm:text-5xl text-3xl font-bold mb-4">What to Watch</h1>
+        <h1 className="sm:text-4xl break-words w-[320px] text-3xl font-bold mb-4">What to Watch</h1>
         <SearchBar
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
