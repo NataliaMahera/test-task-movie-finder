@@ -6,7 +6,7 @@ import { Movie } from '../redux/movies/movies.types';
 import { BsArrowLeft } from 'react-icons/bs';
 import RecommendedMovies from './RecommendedMovies';
 
-const MovieDetails = () => {
+const MovieDetails: React.FC = () => {
   const { movieId } = useParams();
   const location = useLocation();
   const backLinkRef = useRef(location.state?.from ?? '/');
@@ -34,13 +34,29 @@ const MovieDetails = () => {
     fetchSelectedMovie();
   }, [movieId]);
 
-  const handleSelectMovie = (id: number) => {
+  const handleSelectMovie = (id: string) => {
     setMovie(null); 
     setLoading(true); 
+
+    const fetchSelectedMovie = async () => {
+      try {
+        const data = await getMovieDetails(id); // Використовуємо id для отримання даних
+        setMovie(data); // Отримуємо новий фільм
+      } catch (err) {
+        setError((err as Error).message);
+      } finally {
+        setLoading(false); // Вимикаємо індикатор завантаження
+      }
+    };
+
+    fetchSelectedMovie();
   }
 
+  // Перевірка на помилку
   if (error) return <div className="text-red-500">Error: {error}</div>;
-  if (!movie) return <div>No movie data available.</div>;
+
+  // Перевірка на відсутність даних
+  if (!movie) return null; // Тут повертаємо null, щоб нічого не показувати
 
   const {
     backdrop_path,

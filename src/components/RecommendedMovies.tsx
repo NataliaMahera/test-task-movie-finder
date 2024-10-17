@@ -7,7 +7,7 @@ import { Loader } from './Loader';
 interface RecommendedMoviesProps {
   movieId: string | undefined;
   defaultImg: string;
-  onSelectMovie: (id: number) => void;
+  onSelectMovie: (id: string) => void;
 }
 
 const RecommendedMovies: React.FC<RecommendedMoviesProps> = ({
@@ -58,11 +58,11 @@ const RecommendedMovies: React.FC<RecommendedMoviesProps> = ({
       )}
       <h3 className="text-2xl font-semibold mb-6">Recommended Movies</h3>
       <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        {recommendations.map((recMovie, idx) => (
+        {recommendations.map((recMovie) => (
           <li
-            key={idx}
-            onClick={() => onSelectMovie(idx)}
-            className="bg-gray-800 rounded-lg shadow-lg p-2"
+            key={recMovie.id}
+            onClick={() => onSelectMovie(recMovie.id.toString())}
+            className="bg-gray-800 rounded-lg shadow-lg p-2 cursor-pointer"
           >
             <img
               className="w-full rounded-lg mb-2"
