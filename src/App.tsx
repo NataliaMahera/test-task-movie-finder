@@ -7,11 +7,12 @@ import Home from './pages/Home';
 import Favorites from './pages/Favorites';
 import NotFound from './pages/NotFound';
 import MovieDetails from './pages/MovieDetails';
+import { Loader } from './components/Loader';
 
 function App() {
   return (
     <Layout>
-      <Suspense fallback={<p>Loading..</p>}>
+      <Suspense fallback={<Loader/>}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/favorites" element={<Favorites />} />
