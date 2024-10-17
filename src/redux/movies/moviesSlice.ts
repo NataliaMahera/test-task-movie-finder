@@ -1,18 +1,24 @@
 import { createSlice, isPending, isRejected } from '@reduxjs/toolkit';
 import { MoviesState } from './movies.types';
-import { getGenres, getPopularMovies } from './moviesApi';
+import { getGenres, getMovieRecommendations, getPopularMovies, searchMovies } from './moviesApi';
 import {
-    handleFulfilledGetGenres,
+  handleFulfilledGetGenres,
   handleFulfilledGetPopular,
+  handleFulfilledGetRecommendations,
+  handleFulfilledSearchMovies,
   handlePending,
   handleRejected,
 } from './moviesFunctions';
 
 const initialState: MoviesState = {
-  movieItems: [],
+  popularMovies: [],
+  searchResults: [],
+  movieDetails: null,
+  recommendations: [],
   genres: [],
   isLoading: false,
   error: null,
+  totalPages: 0,
 };
 
 export const moviesSlice = createSlice({
@@ -22,10 +28,21 @@ export const moviesSlice = createSlice({
     builder
       .addCase(getPopularMovies.fulfilled, handleFulfilledGetPopular)
       .addCase(getGenres.fulfilled, handleFulfilledGetGenres)
-      .addMatcher(isPending(getPopularMovies), handlePending)
-      .addMatcher(isRejected(getPopularMovies), handleRejected);
+      .addCase(searchMovies.fulfilled, handleFulfilledSearchMovies)
+      .addCase(getMovieRecommendations.fulfilled, handleFulfilledGetRecommendations)
+      .addMatcher(isPending(getPopularMovies, searchMovies, getMovieRecommendations), handlePending)
+      .addMatcher(isRejected(getPopularMovies, searchMovies, getMovieRecommendations), handleRejected);
   },
-  reducers: {},
+  reducers: {
+    clearMovies: (state) => {
+      state.popularMovies = [];
+      state.searchResults = [];
+      state.totalPages = 0;
+      state.recommendations = [];
+    },
+  },
 });
+
+export const { clearMovies } = moviesSlice.actions;
 
 export default moviesSlice.reducer;

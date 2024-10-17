@@ -7,7 +7,7 @@ const instance = axios.create({
 instance.interceptors.request.use((config) => {
   config.params = {
     ...config.params,
-    api_key: '0bd778e99c9dd0be4a5a446585adfec9',
+    api_key: import.meta.env.VITE_API_KEY,
     language: 'en-US',
   };
   return config;
