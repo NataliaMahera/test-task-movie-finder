@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import { Movie } from '../redux/movies/movies.types';
+import { useNavigate } from 'react-router-dom';
 
 const MovieItem: React.FC<Movie> = ({
   id,
@@ -11,6 +12,11 @@ const MovieItem: React.FC<Movie> = ({
   poster_path,
 }) => {
   const { genres } = useSelector((state: RootState) => state.movies);
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/movie/${id}`);
+  };
 
   const getGenreNames = (genreIds: number[]) =>
     genres
@@ -18,7 +24,7 @@ const MovieItem: React.FC<Movie> = ({
       .map((genre) => genre.name)
       .join(', ');
   return (
-    <li
+    <li onClick={handleClick}
       key={id}
       className="relative aspect-[3/4] cursor-pointer border rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out hover:scale-105"
     >
