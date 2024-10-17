@@ -1,6 +1,6 @@
 const Favorites = () => {
     return (
-        <div>FavoritesPage</div>
+        <section className="my-8 px-8 w-full">FavoritesPage</section>
     );
 };
 

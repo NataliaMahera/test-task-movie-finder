@@ -4,7 +4,7 @@ import Logo from './Logo';
 
 const Header: React.FC = () => {
   return (
-    <header className="px-8 bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg flex justify-center items-center">
+    <header className="px-8 bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg w-full flex justify-center items-center">
       <Logo/>
       <nav className="max-w-7xl mx-auto px-6 py-8">
         <ul className="flex justify-center space-x-10">
