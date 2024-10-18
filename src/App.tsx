@@ -1,13 +1,11 @@
-// import reactLogo from './assets/react.svg'
-
-import { Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import Layout from './components/Layout';
-import { Route, Routes } from 'react-router-dom';
-import Home from './pages/Home';
-import Favorites from './pages/Favorites';
-import NotFound from './pages/NotFound';
-import MovieDetails from './pages/MovieDetails';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { Loader } from './components/Loader';
+
+const Home = lazy(() => import('./pages/Home'));
+const Favorites = lazy(() => import('./pages/Favorites'));
+const MovieDetails = lazy(() => import('./pages/MovieDetails'));
 
 function App() {
   return (
@@ -17,16 +15,11 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/movie/:movieId" element={<MovieDetails />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Suspense>
     </Layout>
   );
 }
 
-{
-  /* <a href="https://react.dev" target="_blank">
-  <img src={reactLogo} className="logo react" alt="React logo" />
-</a> */
-}
 export default App;
