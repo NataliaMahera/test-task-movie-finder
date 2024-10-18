@@ -2,7 +2,7 @@ import React from 'react';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 
 interface FavoriteIconProps {
-  isFavorite: boolean;
+  isFavorite: boolean | null;
   onToggle: (event: React.MouseEvent) => void;
 }
 
