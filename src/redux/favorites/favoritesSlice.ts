@@ -1,12 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { Movie } from '../movies/movies.types';
+import { PersistPartial } from 'redux-persist/lib/persistReducer';
 
-export interface FavoritesState {
+export interface FavoritesState extends PersistPartial{
   favoriteItems: Movie[],
 }
 
 const initialState: FavoritesState = {
   favoriteItems: [],
+  _persist: { version: -1, rehydrated: false }
 }
 
 export const favoritesSlice = createSlice({
@@ -24,7 +26,6 @@ export const favoritesSlice = createSlice({
   },
 })
 
-// Action creators are generated for each case reducer function
 export const {addToFavorites, deleteFromFavorites} = favoritesSlice.actions
 
 export default favoritesSlice.reducer
