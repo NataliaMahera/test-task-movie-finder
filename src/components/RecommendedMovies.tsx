@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Movie } from '../redux/movies/movies.types';
-import { getMovieRecommendations } from '../services/themoviedbAPI'; // Імпорт функції для отримання рекомендацій
+import { getMovieRecommendations } from '../services/themoviedbAPI'; 
 import PaginationButton from './PaginationButton';
 import { Loader } from './Loader';
+import defaultImg from '../assets/default-img.jpg'
 
 interface RecommendedMoviesProps {
   movieId: string | undefined;
-  defaultImg: string;
   onSelectMovie: (id: string) => void;
 }
 
 const RecommendedMovies: React.FC<RecommendedMoviesProps> = ({
   movieId,
-  defaultImg,
   onSelectMovie,
 }) => {
   const [recommendations, setRecommendations] = useState<Movie[]>([]);
@@ -49,33 +48,33 @@ const RecommendedMovies: React.FC<RecommendedMoviesProps> = ({
 
   if (error) return <div className="text-red-500">Error: {error}</div>;
 
+  // const uniqueMovies = recommendations.filter((recMovie, index, self) =>
+  //   index === self.findIndex((t) => t.id === recMovie.id)
+  // );
+
   return (
     <div className="mt-10">
-      {isLoading && (
-        <div className="flex justify-center items-center h-[80vh]">
-          <Loader />
-        </div>
-      )}
-      <h3 className="text-2xl font-semibold mb-6">Recommended Movies</h3>
+      {isLoading && <Loader />}
+      <h3 className="text-2xl sm:text-3xl font-semibold uppercase mb-6">Recommended Movies</h3>
       <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        {recommendations.map((recMovie) => (
+        {recommendations.map(({id, poster_path, title, release_date }) => (
           <li
-            key={recMovie.id}
-            onClick={() => onSelectMovie(recMovie.id.toString())}
+            key={id}
+            onClick={() => onSelectMovie(id.toString())}
             className="bg-gray-800 rounded-lg shadow-lg p-2 cursor-pointer"
           >
             <img
               className="w-full rounded-lg mb-2"
               src={
-                recMovie.poster_path
-                  ? `https://image.tmdb.org/t/p/w500${recMovie.poster_path}`
+                poster_path
+                  ? `https://image.tmdb.org/t/p/w500${poster_path}`
                   : defaultImg
               }
-              alt={recMovie.title}
+              alt={title}
             />
-            <h4 className="text-lg font-semibold">{recMovie.title}</h4>
+            <h4 className="text-lg font-semibold">{title}</h4>
             <p className="text-sm text-gray-400">
-              {recMovie.release_date.slice(0, 4)}
+            {release_date ? new Date(release_date).getFullYear() : 'unknown'}
             </p>
           </li>
         ))}
