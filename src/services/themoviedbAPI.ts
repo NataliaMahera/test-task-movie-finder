@@ -12,7 +12,6 @@ export const getMovieRecommendations = async (movieId: string | undefined, page 
       `movie/${movieId}/recommendations`,
       { params: { page } } 
     );
-    console.log(data);
     return {
       results: data.results,
       total_pages: data.total_pages,
