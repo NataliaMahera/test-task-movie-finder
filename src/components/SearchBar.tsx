@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { AiOutlineCloseCircle } from 'react-icons/ai'; // Пакет для іконок
 import { FiSearch } from 'react-icons/fi';
+import { debounce } from "lodash"
 
 interface SearchBarProps {
   searchQuery: string;
@@ -15,13 +16,20 @@ const SearchBar: React.FC<SearchBarProps> = ({
 }) => {
   const [inputValue, setInputValue] = useState(searchQuery);
 
-  useEffect(() => {
-    const debounceTimeout = setTimeout(() => {
-      setSearchQuery(inputValue);
-    }, 500);
+  const debouncedSetSearchQuery = useRef(
+    debounce((value) => {
+      setSearchQuery(value);
+    }, 500)
+  ).current;
 
-    return () => clearTimeout(debounceTimeout);
-  }, [inputValue, setSearchQuery]);
+  useEffect(() => {
+    if (inputValue) {
+      debouncedSetSearchQuery(inputValue);
+    }
+    setSearchQuery('')
+
+    return () => debouncedSetSearchQuery.cancel();
+  }, [debouncedSetSearchQuery, inputValue, setSearchQuery]);
 
   const handleReset = () => {
     setInputValue('');
@@ -39,7 +47,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         onChange={(e) => setInputValue(e.target.value)}
       />
 
-      {/* Кнопка скидання */}
+      {/* Reset input button */}
       {inputValue && (
         <button
           type="button"
