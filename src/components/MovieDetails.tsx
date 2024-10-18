@@ -5,6 +5,7 @@ import { Loader } from '../components/Loader';
 import { Movie } from '../redux/movies/movies.types';
 import { BsArrowLeft } from 'react-icons/bs';
 import RecommendedMovies from './RecommendedMovies';
+import defaultImg from '../assets/default-img.jpg';
 
 const MovieDetails: React.FC = () => {
   const { movieId } = useParams();
@@ -15,49 +16,34 @@ const MovieDetails: React.FC = () => {
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const fetchSelectedMovie = async (id: string) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await getMovieDetails(id);
+      setMovie(data);
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (!movieId) return;
+    fetchSelectedMovie(movieId);
+  }, [location.state?.prevMovieId, movieId]);
 
-    const fetchSelectedMovie = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const data = await getMovieDetails(movieId);
-        setMovie(data);
-      } catch (err) {
-        setError((err as Error).message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const handleSelectRecommendedMovie = (id: string) => {
+    if (!id) return;
+    setMovie(null);
+    setLoading(true);
+    fetchSelectedMovie(id)
+  };
 
-    fetchSelectedMovie();
-  }, [movieId]);
-
-  const handleSelectMovie = (id: string) => {
-    setMovie(null); 
-    setLoading(true); 
-
-    const fetchSelectedMovie = async () => {
-      try {
-        const data = await getMovieDetails(id); // Використовуємо id для отримання даних
-        setMovie(data); // Отримуємо новий фільм
-      } catch (err) {
-        setError((err as Error).message);
-      } finally {
-        setLoading(false); // Вимикаємо індикатор завантаження
-      }
-    };
-
-    fetchSelectedMovie();
-  }
-
-  // Перевірка на помилку
   if (error) return <div className="text-red-500">Error: {error}</div>;
-
-  // Перевірка на відсутність даних
-  if (!movie) return null; // Тут повертаємо null, щоб нічого не показувати
-
+  
+  if (!movie) return null;
   const {
     backdrop_path,
     poster_path,
@@ -75,16 +61,9 @@ const MovieDetails: React.FC = () => {
     imdb_id,
   } = movie;
 
-  const defaultImg =
-    'https://ireland.apollo.olxcdn.com/v1/files/0iq0gb9ppip8-UA/image;s=1000x700';
-
   return (
     <div className="bg-gray-900 text-white min-h-screen">
-      {isLoading && (
-        <div className="flex justify-center items-center h-[80vh]">
-          <Loader />
-        </div>
-      )}
+      {isLoading && <Loader />}
       {/* Backdrop */}
       <div
         className="w-full h-64 md:h-80 bg-cover bg-center relative"
@@ -101,31 +80,31 @@ const MovieDetails: React.FC = () => {
 
       {/* Movie Content */}
       <div className="container mx-auto p-4 sm:p-6">
-        <Link
-          to={backLinkRef.current}
-          className="flex items-center text-blue-500 text-2xl hover:underline"
-        >
-          <BsArrowLeft className="mr-2" /> Go Back
-        </Link>
-
         <div className="flex flex-col lg:flex-row mt-6 lg:space-x-10">
           {/* Poster */}
           <div className="w-full lg:w-1/3 mb-6 lg:mb-0">
+            <Link
+              to={backLinkRef.current}
+              className="w-full mb-4 inline-flex items-center text-indigo-500 text-xl font-medium hover:underline hover:text-blue-400 transition-all duration-300 ease-in-out bg-gray-800 px-4 py-2 rounded-md hover:bg-gray-700"
+            >
+              <BsArrowLeft className="mr-2" /> Go Back
+            </Link>
             <img
               className="w-full rounded-lg shadow-lg"
               src={
                 poster_path
-                  ? `https://image.tmdb.org/t/p/w500${poster_path}`
+                  ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
                   : defaultImg
               }
-              alt={title}
+              alt={movie.title}
             />
           </div>
 
           {/* Movie Details */}
           <div className="lg:w-2/3">
             <h2 className="text-2xl md:text-3xl font-bold">
-              {title} ({release_date.slice(0, 4)})
+              {title} (
+              {release_date ? new Date(release_date).getFullYear() : 'unknown'})
             </h2>
             <p className="italic text-lg text-gray-400">{tagline}</p>
             <p className="mt-4 text-base md:text-lg">{overview}</p>
@@ -138,30 +117,30 @@ const MovieDetails: React.FC = () => {
                   key={genre.id}
                   className="bg-indigo-600 px-3 py-1 rounded-full text-sm"
                 >
-                  {genre.name}
+                  {genre && genre.name.length > 0 ? genre.name : 'not found'}
                 </li>
               ))}
             </ul>
 
             {/* Additional Info */}
-            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
+            <ul className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+              <li>
                 <h3 className="font-semibold">Runtime</h3>
                 <p>{runtime} minutes</p>
-              </div>
-              <div>
+              </li>
+              <li>
                 <h3 className="font-semibold">Budget</h3>
                 <p>${budget.toLocaleString()}</p>
-              </div>
-              <div>
+              </li>
+              <li>
                 <h3 className="font-semibold">Revenue</h3>
                 <p>${revenue.toLocaleString()}</p>
-              </div>
-              <div>
+              </li>
+              <li>
                 <h3 className="font-semibold">Rating</h3>
-                <p>{vote_average.toFixed(1)} / 10</p>
-              </div>
-            </div>
+                <p>{vote_average ? vote_average.toFixed(1) : 'N/A'} / 10</p>
+              </li>
+            </ul>
 
             {/* Production Companies */}
             <h3 className="text-xl font-semibold mt-6">Production Companies</h3>
@@ -207,7 +186,10 @@ const MovieDetails: React.FC = () => {
         </div>
 
         {/* Recommended Movies */}
-        <RecommendedMovies movieId={movieId} defaultImg={defaultImg} onSelectMovie={handleSelectMovie} />
+        <RecommendedMovies
+          movieId={movieId}
+          onSelectMovie={handleSelectRecommendedMovie}
+        />
       </div>
     </div>
   );
