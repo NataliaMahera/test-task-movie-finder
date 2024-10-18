@@ -3,7 +3,7 @@ import ScrollUpBtn from "../components/ScrollUpBtn";
 
 const MovieDetailsPage: React.FC = () => {
   return (
-    <section>
+    <section className="my-8 px-8 w-full">
       <MovieDetails />
       <ScrollUpBtn/>
     </section>

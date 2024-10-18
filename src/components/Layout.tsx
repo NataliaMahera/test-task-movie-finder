@@ -10,7 +10,7 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <>
       <Header />
-      <main className="flex-grow min-w-full">{children}</main>
+      <main className="flex-grow min-w-full w-[100vw] min-h-[70vh]">{children}</main>
       <Footer />
     </>
   );
