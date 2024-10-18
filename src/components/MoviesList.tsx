@@ -14,10 +14,10 @@ import PaginationButton from './PaginationButton';
 
 const MovieList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { popularMovies, searchResults, isLoading, error, totalPages } =
-    useSelector((state: RootState) => state.movies);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
+  const { popularMovies, searchResults, isLoading, error, totalPages } =
+    useSelector((state: RootState) => state.movies);
 
   useEffect(() => {
     if (searchQuery.trim()) {
@@ -28,7 +28,7 @@ const MovieList: React.FC = () => {
     }
 
     return () => {
-      if (searchQuery.trim()) {
+      if (searchQuery) {
         dispatch(clearMovies());
       }
     };
@@ -57,8 +57,11 @@ const MovieList: React.FC = () => {
 
   return (
     <>
+      {isLoading && <Loader />}
       <div className="flex flex-col sm:flex-row sm:justify-between md:gap-80">
-        <h1 className="sm:text-4xl break-words w-[320px] text-3xl font-bold mb-4">What to Watch</h1>
+        <h1 className="sm:text-4xl break-words w-[320px] text-3xl font-bold mb-4">
+          What to Watch
+        </h1>
         <SearchBar
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
@@ -69,11 +72,6 @@ const MovieList: React.FC = () => {
       <h2 className="sm:text-2xl text-xl font-semibold text-left mb-4 uppercase">
         {searchQuery ? 'Search Results' : 'MOST POPULAR'}
       </h2>
-      {isLoading && (
-        <div className="flex justify-center items-center h-[80vh]">
-          <Loader />
-        </div>
-      )}
       <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-8 gap-y-10">
         {(searchQuery ? searchResults : popularMovies).map((movie) => (
           <MovieItem key={movie.id} {...movie} />
@@ -89,7 +87,7 @@ const MovieList: React.FC = () => {
       )}
       {searchQuery && searchResults.length === 0 && !isLoading && !error && (
         <div className="text-center h-80vh mt-8">
-          <p className="text-gray-500 text-xl">
+          <p className="text-gray-400 text-xl">
             No results found for "{searchQuery}". Please try another search
             term.
           </p>
