@@ -13,7 +13,6 @@ export const getPopularMovies = createAsyncThunk<
         page: currentPage,
       },
     });
-    console.log(data);
     return { results: data.results, total_pages: data.total_pages };
   } catch (error) {
     const message = (error as Error).message || 'An error occurred';
@@ -48,7 +47,6 @@ export const searchMovies = createAsyncThunk<
         include_adult: false,
       },
     });
-    console.log('Search results:', data);
     return { results: data.results, total_pages: data.total_pages };
   } catch (error) {
     const message = (error as Error).message || 'An error occurred';
