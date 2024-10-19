@@ -86,7 +86,9 @@ const RecommendedMovies: React.FC<RecommendedMoviesProps> = ({
                     : defaultImg
                 }
                 alt={movie.title}
-                width="300"
+                width="500"
+                height="750"
+                loading="lazy"
               />
 
               <h4 className="text-lg font-semibold">{movie.title}</h4>

@@ -26,7 +26,6 @@ const MovieContent: React.FC<MovieContentProps> = ({ movie }) => {
 
   return (
     <>
-    
       <div className="bg-gray-700 text-white w-full min-h-screen">
         {/* Backdrop */}
         <div
@@ -43,14 +42,21 @@ const MovieContent: React.FC<MovieContentProps> = ({ movie }) => {
         </div>
 
         {/* Movie Content */}
-        <div className={movie.length === 0 ? 'h-[74vh]' : 'mx-auto py-10 px-4 sm:px-10'}>
+        <div
+          className={
+            movie.length === 0 ? 'h-[74vh]' : 'mx-auto py-10 px-4 sm:px-10'
+          }
+        >
           <div className="flex flex-col lg:flex-row mt-6 lg:space-x-10">
             {/* Poster */}
             <div className="w-full lg:w-1/3 mb-6 lg:mb-0">
               <div className="relative">
                 <img
-                aria-label='poster image'
+                  aria-label="poster image"
                   className="w-full rounded-lg shadow-lg"
+                  width="500"
+                  height="750"
+                  loading="lazy"
                   src={
                     poster_path
                       ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
@@ -58,7 +64,7 @@ const MovieContent: React.FC<MovieContentProps> = ({ movie }) => {
                   }
                   alt={movie.title}
                 />
-                 <FavoriteButton movie={movie} />
+                <FavoriteButton movie={movie} />
               </div>
             </div>
 
@@ -116,10 +122,13 @@ const MovieContent: React.FC<MovieContentProps> = ({ movie }) => {
                   <li key={company.id} className="flex items-center gap-2">
                     {company.logo_path && (
                       <img
-                      aria-label='company image'
+                        aria-label="company image"
                         src={`https://image.tmdb.org/t/p/w200${company.logo_path}`}
                         alt={company.name}
                         className="w-16"
+                        width="100"
+                        height="200"
+                        loading="lazy"
                       />
                     )}
                     <span>{company.name}</span>
@@ -131,7 +140,7 @@ const MovieContent: React.FC<MovieContentProps> = ({ movie }) => {
               <div className="mt-6 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                 {homepage && (
                   <a
-                   aria-label='Official Website link'
+                    aria-label="Official Website link"
                     href={homepage}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -142,7 +151,7 @@ const MovieContent: React.FC<MovieContentProps> = ({ movie }) => {
                 )}
                 {imdb_id && (
                   <a
-                  aria-label='imdb link'
+                    aria-label="imdb link"
                     href={`https://www.imdb.com/title/${imdb_id}`}
                     target="_blank"
                     rel="noopener noreferrer"
