@@ -53,10 +53,10 @@ const MovieItem: React.FC<FavoriteMovie> = ({
           poster_path,
         }}
       />
-      <p className="text-gray-300 px-2 py-3  text-sm sm:text-base text-center break-words max-w-full">
-        <strong className="text-gray-400 uppercase">Genre:</strong>{' '}
+      <p className="text-gray-200 px-2 py-3  text-sm sm:text-base text-center break-words max-w-full">
+        <strong className="text-gray-200 uppercase">Genre:</strong>{' '}
         {genre_ids && genre_ids.length > 0 ? (
-          <span className="text-blue-500 font-semibold">
+          <span className="text-blue-400 font-semibold">
             {getGenreNames(genre_ids)}
           </span>
         ) : (
