@@ -28,7 +28,7 @@ const MovieItem: React.FC<FavoriteMovie> = ({
   return (
     <li
       onClick={handleClick}
-      className="relative aspect-[2/3.5] cursor-pointer border rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out hover:scale-105"
+      className="relative md:min-h-[400px] min-h-[200px] cursor-pointer border rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out hover:scale-105"
     >
       <img
         src={
@@ -37,7 +37,8 @@ const MovieItem: React.FC<FavoriteMovie> = ({
             : defaultImg
         }
         alt={title}
-        className=" mb-2 h-auto transition-opacity duration-300 ease-in-out"
+        width="500" 
+        className=" mb-2 aspect-[2/3] transition-opacity duration-300 ease-in-out"
       />
       
       <FavoriteButton movie={{ id, title, genre_ids, release_date, vote_average, poster_path }} />
@@ -48,7 +49,7 @@ const MovieItem: React.FC<FavoriteMovie> = ({
             : 'not found'}
         </p>
       {/* Additional info when hovering */}
-      <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col justify-center items-center opacity-0 transition-opacity duration-300 ease-in-out hover:opacity-100 p-2">
+      <div className="absolute min-h-[150px] inset-0 bg-black bg-opacity-60 flex flex-col justify-center items-center opacity-0 transition-opacity duration-300 ease-in-out hover:opacity-100 p-2">
         <h3 className="font-bold text-lg sm:text-xl text-white text-center break-words max-w-full">
           {title}
         </h3>

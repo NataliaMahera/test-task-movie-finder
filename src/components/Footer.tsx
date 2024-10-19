@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <footer className="p-8 border-t-[1px] border-gray-600">
+    <footer className="p-8 border-t-[1px] border-gray-600 min-h-[100px]">
       <div className="text-center">
         {' '}
         &#169; Movie Finder 2024 | Developed by{' '}

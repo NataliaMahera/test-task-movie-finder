@@ -71,17 +71,18 @@ const RecommendedMovies: React.FC<RecommendedMoviesProps> = ({
           <li
             key={`${movie.id}-${idx}`}
             onClick={() => handleSelectMovie(movie.id.toString())}
-            className="bg-gray-700 aspect-[2/3] rounded-lg shadow-lg p-2 cursor-pointer relative transition-all duration-300 ease-in-out hover:scale-105"
+            className="bg-gray-700 md:min-h-[400px] min-h-[200px]  rounded-lg shadow-lg p-2 cursor-pointer relative transition-all duration-300 ease-in-out hover:scale-105"
           >
             <FavoriteButton movie={movie} />
 
             <img
-              className="w-full rounded-lg mb-2"
+              className="aspect-[2/3] rounded-lg mb-2"
               src={movie.poster_path
                 ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
                 : defaultImg
               }
               alt={movie.title}
+              width="500" 
             />
 
             <h4 className="text-lg font-semibold">{movie.title}</h4>
