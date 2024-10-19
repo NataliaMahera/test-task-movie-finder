@@ -1,5 +1,3 @@
-import { AiOutlineArrowDown } from "react-icons/ai";
-
 interface PaginationButtonProps {
   currentPage: number;
   totalPages: number;
@@ -21,7 +19,7 @@ const PaginationButton: React.FC<PaginationButtonProps> = ({ currentPage, totalP
             : 'bg-gradient-to-r from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800 hover:scale-105 hover:shadow-xl'
         }`}
       >
-        <AiOutlineArrowDown size={24} />
+       
         {currentPage >= totalPages ? 'No More Pages' : 'LOAD MORE'}
       </button>
     </div>

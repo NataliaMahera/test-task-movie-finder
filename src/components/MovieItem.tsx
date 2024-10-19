@@ -45,7 +45,7 @@ const MovieItem: React.FC<FavoriteMovie> = ({
         <p className="text-gray-300 px-2 py-3  text-sm sm:text-base text-center break-words max-w-full">
           <strong className='text-gray-400 uppercase'>Genre:</strong>{' '}
           {genre_ids && genre_ids.length > 0
-            ? getGenreNames(genre_ids)
+            ? <span className='text-blue-500 font-semibold'>{getGenreNames(genre_ids)}</span>
             : 'not found'}
         </p>
       {/* Additional info when hovering */}
