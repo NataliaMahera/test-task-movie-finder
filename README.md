@@ -40,6 +40,7 @@ cd test-task-movie-finder
 npm install
 ```
 Налаштувати API ключ:
+
 Створити файл .env у кореневій папці.
 Додати свій API ключ із The Movie Database API:
 Тестово залишила свій API ключ в .env.example
