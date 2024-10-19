@@ -74,7 +74,7 @@ const RecommendedMovies: React.FC<RecommendedMoviesProps> = ({
             <li
               key={`${movie.id}-${idx}`}
               onClick={() => handleSelectMovie(movie.id.toString())}
-              className="bg-gray-700 md:min-h-[400px] min-h-[200px]  rounded-lg shadow-lg p-2 cursor-pointer relative transition-all duration-300 ease-in-out hover:scale-105"
+              className="bg-gray-700 md:min-h-[300px] min-h-[200px]  rounded-lg shadow-lg p-2 cursor-pointer relative transition-all duration-300 ease-in-out hover:scale-105"
             >
               <FavoriteButton movie={movie} />
 
