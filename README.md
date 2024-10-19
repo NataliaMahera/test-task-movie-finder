@@ -1,50 +1,57 @@
-# React + TypeScript + Vite
+Movie Explorer 🎬
+Movie Explorer — це односторінковий веб-додаток для перегляду популярних фільмів, пошуку та додавання фільмів до обраного за допомогою The Movie Database (TMDB) API.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Функціонал 🌟
+Популярні фільми: Головна сторінка відображає список популярних фільмів із динамічним підвантаженням.
+Пошук фільмів: Інтерактивний пошук фільмів за назвою.
+Деталі фільму: Натисніть на картку фільму, щоб переглянути його деталі, такі як жанри, рік випуску, рейтинг, і отримати рекомендації подібних фільмів.
+Обране: Додавайте та видаляйте фільми зі списку обраного, який зберігається в localStorage для майбутнього перегляду.
+Жанри фільмів: Для кожного фільму відображаються його жанри (назви, а не ID).
+Рекомендації: На сторінці кожного фільму показуються рекомендації схожих стрічок.
+Технології 🛠️
+React з використанням TypeScript для надійної типізації.
+Vite для швидкої збірки та запуску.
+Tailwind CSS для стильного і адаптивного дизайну.
+Redux Toolkit для управління глобальним станом додатка, включаючи роботу з обраними фільмами.
+TMDB API для отримання даних про фільми, пошуку та рекомендацій.
+Як запустити проєкт 🚀
+Клонувати репозиторій:
 
-Currently, two official plugins are available:
+bash
+Копіювати код
+git clone https://github.com/your-username/movie-explorer.git
+Перейти до каталогу проекту:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+bash
+Копіювати код
+cd movie-explorer
+Встановити залежності:
 
-## Expanding the ESLint configuration
+bash
+Копіювати код
+npm install
+Налаштувати API ключ:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Створити файл .env у кореневій папці.
+Додати свій API ключ із The Movie Database API:
+makefile
+Копіювати код
+VITE_TMDB_API_KEY=your_api_key
+Запустити додаток для розробки:
 
-- Configure the top-level `parserOptions` property like this:
+bash
+Копіювати код
+npm run dev
+Для збірки продакшн-версії:
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+bash
+Копіювати код
+npm run build
+Live Demo 🌐
+Додаток доступний за цим посиланням: Movie Explorer на Vercel (замініть на своє посилання).
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Посилання на TMDB API 📚
+TMDB API Документація
+Ліцензія 📝
+Цей проєкт поширюється за ліцензією MIT. Ви можете використовувати, змінювати і поширювати його на власний розсуд.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
