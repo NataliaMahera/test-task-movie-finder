@@ -16,7 +16,7 @@ const Favorites: React.FC = () => {
       {favoriteItems.length === 0 ? (
         <p className="text-gray-400 text-center text-xl">💁Add the movie to your favorite list.</p>
       ) : (
-        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10">
+        <ul className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-10">
           {favoriteItems.map((movie) => (
             <MovieItem key={movie.id} {...movie} />
           ))}
