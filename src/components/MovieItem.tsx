@@ -37,17 +37,31 @@ const MovieItem: React.FC<FavoriteMovie> = ({
             : defaultImg
         }
         alt={title}
-        width="500" 
+        width="300"
+        height="500"
         className=" mb-2 aspect-[2/3] transition-opacity duration-300 ease-in-out"
       />
-      
-      <FavoriteButton movie={{ id, title, genre_ids, release_date, vote_average, poster_path }} />
-        <p className="text-gray-300 px-2 py-3  text-sm sm:text-base text-center break-words max-w-full">
-          <strong className='text-gray-400 uppercase'>Genre:</strong>{' '}
-          {genre_ids && genre_ids.length > 0
-            ? <span className='text-blue-500 font-semibold'>{getGenreNames(genre_ids)}</span>
-            : 'not found'}
-        </p>
+
+      <FavoriteButton
+        movie={{
+          id,
+          title,
+          genre_ids,
+          release_date,
+          vote_average,
+          poster_path,
+        }}
+      />
+      <p className="text-gray-300 px-2 py-3  text-sm sm:text-base text-center break-words max-w-full">
+        <strong className="text-gray-400 uppercase">Genre:</strong>{' '}
+        {genre_ids && genre_ids.length > 0 ? (
+          <span className="text-blue-500 font-semibold">
+            {getGenreNames(genre_ids)}
+          </span>
+        ) : (
+          'not found'
+        )}
+      </p>
       {/* Additional info when hovering */}
       <div className="absolute min-h-[150px] inset-0 bg-black bg-opacity-60 flex flex-col justify-center items-center opacity-0 transition-opacity duration-300 ease-in-out hover:opacity-100 p-2">
         <h3 className="font-bold text-lg sm:text-xl text-white text-center break-words max-w-full">
