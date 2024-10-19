@@ -5,7 +5,6 @@ import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { Movie } from '../redux/movies/movies.types';
 
 export type FavoriteMovie = Pick<Movie, 'id' | 'title' | 'poster_path' | 'release_date' | 'vote_average' | 'genre_ids'>;
-
 interface FavoriteButtonProps {
     movie: FavoriteMovie;
   }

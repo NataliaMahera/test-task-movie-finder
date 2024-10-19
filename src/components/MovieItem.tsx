@@ -28,7 +28,7 @@ const MovieItem: React.FC<FavoriteMovie> = ({
   return (
     <li
       onClick={handleClick}
-      className="relative aspect-[3/4] cursor-pointer border rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out hover:scale-105"
+      className="relative aspect-auto cursor-pointer border rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out hover:scale-105"
     >
       <img
         src={
@@ -37,22 +37,21 @@ const MovieItem: React.FC<FavoriteMovie> = ({
             : defaultImg
         }
         alt={title}
-        className="w-full h-auto transition-opacity duration-300 ease-in-out"
+        className="w-full mb-2 h-auto transition-opacity duration-300 ease-in-out"
       />
       
       <FavoriteButton movie={{ id, title, genre_ids, release_date, vote_average, poster_path }} />
-
-      {/* Additional info when hovering */}
-      <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col justify-center items-center opacity-0 sm:opacity-0 transition-opacity duration-300 ease-in-out hover:opacity-100 sm:hover:opacity-100 p-2">
-        <h4 className="font-bold text-lg sm:text-xl text-white text-center break-words max-w-full">
-          {title}
-        </h4>
-        <p className="text-white text-sm sm:text-base text-center break-words max-w-full">
-          <strong>Genres:</strong>{' '}
+        <p className="text-gray-300 px-2 py-3  text-sm sm:text-base text-center break-words max-w-full">
+          <strong className='text-gray-500 uppercase'>Genre:</strong>{' '}
           {genre_ids && genre_ids.length > 0
             ? getGenreNames(genre_ids)
             : 'not found'}
         </p>
+      {/* Additional info when hovering */}
+      <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col justify-center items-center opacity-0 transition-opacity duration-300 ease-in-out hover:opacity-100 p-2">
+        <h4 className="font-bold text-lg sm:text-xl text-white text-center break-words max-w-full">
+          {title}
+        </h4>
         <p className="text-white text-sm sm:text-base text-center">
           <strong>Release:</strong>{' '}
           {release_date ? new Date(release_date).getFullYear() : 'unknown'}

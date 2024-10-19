@@ -74,7 +74,7 @@ const MovieList: React.FC = () => {
       <h2 className="sm:text-2xl text-xl font-semibold text-left mb-4 uppercase">
         {searchQuery ? 'Search Results' : 'MOST POPULAR'}
       </h2>
-      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10">
+      <ul className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-10">
         {(searchQuery ? searchResults : popularMovies).map((movie) => (
           <MovieItem key={movie.id} {...movie} />
         ))}

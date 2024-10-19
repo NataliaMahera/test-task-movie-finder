@@ -43,7 +43,7 @@ const MovieContent: React.FC<MovieContentProps> = ({ movie }) => {
         </div>
 
         {/* Movie Content */}
-        <div className={movie.length === 0 ? 'h-[74vh]' : 'mx-auto px-4 sm:px-10'}>
+        <div className={movie.length === 0 ? 'h-[74vh]' : 'mx-auto py-10 px-4 sm:px-10'}>
           <div className="flex flex-col lg:flex-row mt-6 lg:space-x-10">
             {/* Poster */}
             <div className="w-full lg:w-1/3 mb-6 lg:mb-0">
