@@ -1,10 +1,15 @@
-import MoviesList from '../components/MoviesList';
+import { lazy, Suspense } from 'react';
 import ScrollUpBtn from '../components/ScrollUpBtn';
+import { Loader } from '../components/Loader';
+
+const MoviesList = lazy(() => import('../components/MoviesList'));
 
 const Home: React.FC = () => {
   return (
     <section className="my-8 px-4 sm:px-10 w-full">
-      <MoviesList />
+      <Suspense fallback={<Loader />}>
+        <MoviesList />
+      </Suspense>
       <ScrollUpBtn />
     </section>
   );

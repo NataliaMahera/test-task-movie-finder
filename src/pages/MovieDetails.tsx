@@ -1,11 +1,16 @@
-import MovieDetails from "../components/MovieDetails";
-import ScrollUpBtn from "../components/ScrollUpBtn";
+import { lazy, Suspense } from 'react';
+import ScrollUpBtn from '../components/ScrollUpBtn';
+import { Loader } from '../components/Loader';
+
+const MovieDetails = lazy(()=> import ('../components/MovieDetails'));
 
 const MovieDetailsPage: React.FC = () => {
   return (
     <section className="my-8 w-full">
-      <MovieDetails />
-      <ScrollUpBtn/>
+      <Suspense fallback={<Loader />}>
+        <MovieDetails />
+      </Suspense>
+      <ScrollUpBtn />
     </section>
   );
 };
