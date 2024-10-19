@@ -40,7 +40,9 @@ const MovieList: React.FC = () => {
 
   const handleLoadMore = () => {
     if (currentPage < totalPages) {
-      setCurrentPage((prevPage) => prevPage + 1);
+      setTimeout(() => {
+        setCurrentPage((prevPage) => prevPage + 1);
+      }, 500); 
     }
   };
 
@@ -58,8 +60,8 @@ const MovieList: React.FC = () => {
   return (
     <>
       {isLoading && <Loader />}
-      <div className="flex w-full flex-col sm:flex-row sm:justify-between md:gap-80">
-        <h1 className="sm:text-4xl break-words w-[320px] text-3xl font-bold mb-4">
+      <div className="flex flex-col sm:flex-row sm:justify-between">
+        <h1 className=" break-words min-w-[300px] text-3xl font-bold mb-4">
           What to Watch
         </h1>
         <SearchBar
@@ -72,7 +74,7 @@ const MovieList: React.FC = () => {
       <h2 className="sm:text-2xl text-xl font-semibold text-left mb-4 uppercase">
         {searchQuery ? 'Search Results' : 'MOST POPULAR'}
       </h2>
-      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-8 gap-y-10">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10">
         {(searchQuery ? searchResults : popularMovies).map((movie) => (
           <MovieItem key={movie.id} {...movie} />
         ))}

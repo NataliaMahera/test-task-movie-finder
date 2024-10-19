@@ -44,7 +44,7 @@ const MovieDetails: React.FC = () => {
 
   return (
     <>
-      <div className="px-6">
+      <div className="px-4 sm:px-10">
         <h1 className="sm:text-4xl break-words w-[320px] text-3xl font-bold mb-4">
           Movie Details
         </h1>

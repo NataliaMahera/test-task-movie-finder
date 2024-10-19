@@ -27,7 +27,7 @@ const MovieContent: React.FC<MovieContentProps> = ({ movie }) => {
   return (
     <>
     
-      <div className="bg-gray-900 text-white w-full min-h-screen">
+      <div className="bg-gray-700 text-white w-full min-h-screen">
         {/* Backdrop */}
         <div
           className="w-full h-64 md:h-80 bg-cover bg-center relative"
@@ -43,7 +43,7 @@ const MovieContent: React.FC<MovieContentProps> = ({ movie }) => {
         </div>
 
         {/* Movie Content */}
-        <div className={movie.length === 0 ? 'h-[74vh]' : 'mx-auto p-4 sm:p-6'}>
+        <div className={movie.length === 0 ? 'h-[74vh]' : 'mx-auto px-4 sm:px-10'}>
           <div className="flex flex-col lg:flex-row mt-6 lg:space-x-10">
             {/* Poster */}
             <div className="w-full lg:w-1/3 mb-6 lg:mb-0">

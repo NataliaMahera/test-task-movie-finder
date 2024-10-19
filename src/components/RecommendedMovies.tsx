@@ -173,7 +173,9 @@ const RecommendedMovies: React.FC<RecommendedMoviesProps> = ({
 
   const handleLoadMore = () => {
     if (currentPage < totalPages) {
-      setCurrentPage((prevPage) => prevPage + 1);
+      setTimeout(() => {
+        setCurrentPage((prevPage) => prevPage + 1);
+      }, 500); 
     }
   };
 
@@ -187,15 +189,15 @@ const RecommendedMovies: React.FC<RecommendedMoviesProps> = ({
   if (error) return <div className="text-red-500">Error: {error}</div>;
 
   return (
-    <div className="mt-10 px-6">
+    <div className="mt-10 px-4 sm:px-10">
       {isLoading && <Loader />}
       <h3 className="text-2xl sm:text-3xl font-semibold uppercase mb-6">Recommended Movies</h3>
-      <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+      <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
         {recommendations.map((movie, idx) => (
           <li
             key={`${movie.id}-${idx}`}
             onClick={() => handleSelectMovie(movie.id.toString())}
-            className="bg-gray-800 rounded-lg shadow-lg p-2 cursor-pointer relative transition-all duration-300 ease-in-out hover:scale-105"
+            className="bg-gray-700 rounded-lg shadow-lg p-2 cursor-pointer relative transition-all duration-300 ease-in-out hover:scale-105"
           >
             {/* Використовуємо FavoriteButton */}
             <FavoriteButton movie={movie} />
