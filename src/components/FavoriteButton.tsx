@@ -28,9 +28,9 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ movie }) => {
   return (
     <button
       onClick={handleToggleFavorite}
-      className='absolute top-2 right-2 z-10 p-2'
+      className='absolute top-2 right-2 z-10 p-2 transition-all duration-300 ease-in-out'
     >
-     {isFavorite ? <AiFillStar size={50} className="text-yellow-500" /> : <AiOutlineStar size={40}/>}
+     {isFavorite ? <AiFillStar size={40} className="text-yellow-500 scale-125 transition-all duration-300 ease-in-out" /> : <AiOutlineStar size={40} className='transition-all scale-100 duration-300 ease-in-out'/>}
     </button>
   );
 };
