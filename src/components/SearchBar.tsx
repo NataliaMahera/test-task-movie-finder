@@ -16,12 +16,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
 }) => {
   const [inputValue, setInputValue] = useState(searchQuery);
 
-  // const debouncedSetSearchQuery = useRef(
-  //   debounce((value) => {
-  //     setSearchQuery(value);
-  //   }, 500)
-  // ).current;
-
   const debouncedSetSearchQuery = debounce((value: string) => {
     setSearchQuery(value);
   }, 1000);
