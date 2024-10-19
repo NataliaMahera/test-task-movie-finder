@@ -61,10 +61,11 @@ Live Demo 🌐
 
 Посилання на TMDB API 📚
 TMDB API Документація https://developers.themoviedb.org/3
+
 Запити які використовувались:
-· https://developers.themoviedb.org/3/movies/get-popular-movies
-· https://developers.themoviedb.org/3/search/search-movies
-· https://developers.themoviedb.org/3/genres
-· https://developers.themoviedb.org/3/movies/get-movie-details
-· https://developers.themoviedb.org/3/movies/get-movie-recommendations
+- https://developers.themoviedb.org/3/movies/get-popular-movies
+- https://developers.themoviedb.org/3/search/search-movies
+- https://developers.themoviedb.org/3/genres
+- https://developers.themoviedb.org/3/movies/get-movie-details
+- https://developers.themoviedb.org/3/movies/get-movie-recommendations
 
