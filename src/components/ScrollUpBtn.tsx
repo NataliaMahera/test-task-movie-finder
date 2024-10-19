@@ -31,7 +31,7 @@ const ScrollUpBtn: React.FC = () => {
     <button
       onClick={scrollToTop}
       className={clsx(
-        'fixed bottom-4 right-4 transition-all duration-300 ease-in-out bg-blue-600 text-white rounded-full p-2 shadow-lg hover:bg-blue-700',
+        'fixed bottom-16 right-5 transition-all duration-300 ease-in-out z-30 rounded-full p-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800 hover:scale-105 hover:shadow-xl',
         {
           'opacity-100 visible translate-x-0': isVisible,
           'opacity-0 invisible translate-x-full': !isVisible,
