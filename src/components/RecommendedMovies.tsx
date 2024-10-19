@@ -4,7 +4,7 @@ import { getMovieRecommendations } from '../services/themoviedbAPI';
 import PaginationButton from './PaginationButton';
 import { Loader } from './Loader';
 import defaultImg from '../assets/default-img.jpg';
-import FavoriteButton from './FavoriteButton';  // Імпорт універсальної кнопки
+import FavoriteButton from './FavoriteButton'; 
 import { useNavigate } from 'react-router-dom';
 
 interface RecommendedMoviesProps {
@@ -28,11 +28,11 @@ const RecommendedMovies: React.FC<RecommendedMoviesProps> = ({
       try {
         setLoading(true);
         setError(null);
-        const data = await getMovieRecommendations(movieId, currentPage);  // Передаємо поточну сторінку
+        const data = await getMovieRecommendations(movieId, currentPage);  
         if (currentPage === 1) {
-          setRecommendations(data.results);  // Перезаписуємо, якщо перша сторінка
+          setRecommendations(data.results);  
         } else {
-          setRecommendations((prev) => [...prev, ...data.results]);  // Додаємо при пагінації
+          setRecommendations((prev) => [...prev, ...data.results]); 
         }
         setTotalPages(data.total_pages);
       } catch (err) {
@@ -71,9 +71,8 @@ const RecommendedMovies: React.FC<RecommendedMoviesProps> = ({
           <li
             key={`${movie.id}-${idx}`}
             onClick={() => handleSelectMovie(movie.id.toString())}
-            className="bg-gray-700 rounded-lg shadow-lg p-2 cursor-pointer relative transition-all duration-300 ease-in-out hover:scale-105"
+            className="bg-gray-700 aspect-[2/3] rounded-lg shadow-lg p-2 cursor-pointer relative transition-all duration-300 ease-in-out hover:scale-105"
           >
-            {/* Використовуємо FavoriteButton */}
             <FavoriteButton movie={movie} />
 
             <img

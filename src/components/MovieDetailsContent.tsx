@@ -49,6 +49,7 @@ const MovieContent: React.FC<MovieContentProps> = ({ movie }) => {
             <div className="w-full lg:w-1/3 mb-6 lg:mb-0">
               <div className="relative">
                 <img
+                aria-label='poster image'
                   className="w-full rounded-lg shadow-lg"
                   src={
                     poster_path
@@ -115,6 +116,7 @@ const MovieContent: React.FC<MovieContentProps> = ({ movie }) => {
                   <li key={company.id} className="flex items-center gap-2">
                     {company.logo_path && (
                       <img
+                      aria-label='company image'
                         src={`https://image.tmdb.org/t/p/w200${company.logo_path}`}
                         alt={company.name}
                         className="w-16"
@@ -129,6 +131,7 @@ const MovieContent: React.FC<MovieContentProps> = ({ movie }) => {
               <div className="mt-6 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                 {homepage && (
                   <a
+                   aria-label='Official Website link'
                     href={homepage}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -139,6 +142,7 @@ const MovieContent: React.FC<MovieContentProps> = ({ movie }) => {
                 )}
                 {imdb_id && (
                   <a
+                  aria-label='imdb link'
                     href={`https://www.imdb.com/title/${imdb_id}`}
                     target="_blank"
                     rel="noopener noreferrer"
