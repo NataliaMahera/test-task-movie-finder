@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Movie } from '../redux/movies/movies.types';
-import { getMovieRecommendations } from '../services/themoviedbAPI'; 
+import { getMovieRecommendations } from '../services/themoviedbAPI';
 import PaginationButton from './PaginationButton';
 import { Loader } from './Loader';
 import defaultImg from '../assets/default-img.jpg';
-import FavoriteButton from './FavoriteButton'; 
+import FavoriteButton from './FavoriteButton';
 import { useNavigate } from 'react-router-dom';
 
 interface RecommendedMoviesProps {
@@ -28,11 +28,11 @@ const RecommendedMovies: React.FC<RecommendedMoviesProps> = ({
       try {
         setLoading(true);
         setError(null);
-        const data = await getMovieRecommendations(movieId, currentPage);  
+        const data = await getMovieRecommendations(movieId, currentPage);
         if (currentPage === 1) {
-          setRecommendations(data.results);  
+          setRecommendations(data.results);
         } else {
-          setRecommendations((prev) => [...prev, ...data.results]); 
+          setRecommendations((prev) => [...prev, ...data.results]);
         }
         setTotalPages(data.total_pages);
       } catch (err) {
@@ -49,7 +49,7 @@ const RecommendedMovies: React.FC<RecommendedMoviesProps> = ({
     if (currentPage < totalPages) {
       setTimeout(() => {
         setCurrentPage((prevPage) => prevPage + 1);
-      }, 500); 
+      }, 500);
     }
   };
 
@@ -65,32 +65,45 @@ const RecommendedMovies: React.FC<RecommendedMoviesProps> = ({
   return (
     <div className="mt-10 px-4 sm:px-10">
       {isLoading && <Loader />}
-      <h3 className="text-2xl sm:text-3xl font-semibold uppercase mb-6">Recommended Movies</h3>
+      <h3 className="text-2xl sm:text-3xl font-semibold uppercase mb-6">
+        Recommended Movies
+      </h3>
       <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-10">
-        {recommendations.map((movie, idx) => (
-          <li
-            key={`${movie.id}-${idx}`}
-            onClick={() => handleSelectMovie(movie.id.toString())}
-            className="bg-gray-700 md:min-h-[400px] min-h-[200px]  rounded-lg shadow-lg p-2 cursor-pointer relative transition-all duration-300 ease-in-out hover:scale-105"
-          >
-            <FavoriteButton movie={movie} />
+        {recommendations.length > 0 ? (
+          recommendations.map((movie, idx) => (
+            <li
+              key={`${movie.id}-${idx}`}
+              onClick={() => handleSelectMovie(movie.id.toString())}
+              className="bg-gray-700 md:min-h-[400px] min-h-[200px]  rounded-lg shadow-lg p-2 cursor-pointer relative transition-all duration-300 ease-in-out hover:scale-105"
+            >
+              <FavoriteButton movie={movie} />
 
-            <img
-              className="aspect-[2/3] rounded-lg mb-2"
-              src={movie.poster_path
-                ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                : defaultImg
-              }
-              alt={movie.title}
-              width="300" 
-            />
+              <img
+                className="aspect-[2/3] rounded-lg mb-2"
+                src={
+                  movie.poster_path
+                    ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                    : defaultImg
+                }
+                alt={movie.title}
+                width="300"
+              />
 
-            <h4 className="text-lg font-semibold">{movie.title}</h4>
-            <p className="text-sm text-gray-400">
-              {movie.release_date ? new Date(movie.release_date).getFullYear() : 'unknown'}
+              <h4 className="text-lg font-semibold">{movie.title}</h4>
+              <p className="text-sm text-gray-400">
+                {movie.release_date
+                  ? new Date(movie.release_date).getFullYear()
+                  : 'unknown'}
+              </p>
+            </li>
+          ))
+        ) : (
+          <li className="col-span-2 sm:col-span-3 md:col-span-4 lg:col-span-6 text-center p-4">
+            <p className="text-gray-400 text-xl">
+              Unfortunately, there are no recommended movies.
             </p>
           </li>
-        ))}
+        )}
       </ul>
 
       {showLoadMore && !isLoading && !error && (
