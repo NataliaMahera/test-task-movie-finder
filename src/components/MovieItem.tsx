@@ -38,7 +38,6 @@ const MovieItem: React.FC<FavoriteMovie> = ({
         }
         alt={title}
         width="300"
-        height="500"
         className=" mb-2 aspect-[2/3] transition-opacity duration-300 ease-in-out"
       />
 
