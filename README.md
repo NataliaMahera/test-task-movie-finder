@@ -41,9 +41,12 @@ npm install
 ```
 Налаштувати API ключ:
 
-Створити файл .env у кореневій папці.
-Додати свій API ключ із The Movie Database API:
 Тестово залишила свій API ключ в .env.example
+
+Створити файл .env у кореневій папці.
+
+Додати свій API ключ із The Movie Database API:
+
 ```bash
 cp .env.example .env
 # відкрийте .env та додайте свій API ключ у змінну 
