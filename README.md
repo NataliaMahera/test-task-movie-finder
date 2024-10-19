@@ -60,11 +60,11 @@ Live Demo 🌐
 Додаток доступний за цим посиланням: Movie Finder на Vercel [link](https://movie-finder-alpha-lilac.vercel.app).
 
 Посилання на TMDB API 📚
-TMDB API Документація [link](https://developers.themoviedb.org/3)
+TMDB API Документація https://developers.themoviedb.org/3
 Запити які використовувались:
-· [link](https://developers.themoviedb.org/3/movies/get-popular-movies)
-· [link](https://developers.themoviedb.org/3/search/search-movies)
-· [link](https://developers.themoviedb.org/3/genres)
-· [link](https://developers.themoviedb.org/3/movies/get-movie-details)
-· [link](https://developers.themoviedb.org/3/movies/get-movie-recommendations)
+· https://developers.themoviedb.org/3/movies/get-popular-movies
+· https://developers.themoviedb.org/3/search/search-movies
+· https://developers.themoviedb.org/3/genres
+· https://developers.themoviedb.org/3/movies/get-movie-details
+· https://developers.themoviedb.org/3/movies/get-movie-recommendations
 
