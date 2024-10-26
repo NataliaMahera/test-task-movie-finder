@@ -1,15 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 import { Movie } from '../movies/movies.types';
-import { PersistPartial } from 'redux-persist/lib/persistReducer';
 
-export interface FavoritesState extends PersistPartial{
-  favoriteItems: Movie[],
+export interface FavoritesState {
+  favoriteItems: Movie[];
 }
 
 const initialState: FavoritesState = {
   favoriteItems: [],
-  _persist: { version: -1, rehydrated: false }
-}
+};
 
 export const favoritesSlice = createSlice({
   name: 'favorites',
@@ -24,8 +22,8 @@ export const favoritesSlice = createSlice({
       );
     },
   },
-})
+});
 
-export const {addToFavorites, deleteFromFavorites} = favoritesSlice.actions
+export const { addToFavorites, deleteFromFavorites } = favoritesSlice.actions;
 
-export default favoritesSlice.reducer
+export default favoritesSlice.reducer;
