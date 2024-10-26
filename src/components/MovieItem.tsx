@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import { useNavigate } from 'react-router-dom';
 import defaultImg from '../assets/default-img.jpg';
-import FavoriteButton, { FavoriteMovie } from './FavoriteButton'; // Імпортуємо універсальну кнопку
+import FavoriteButton, { FavoriteMovie } from './FavoriteButton'; 
 
 const MovieItem: React.FC<FavoriteMovie> = ({
   id,

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ErrorResponse, Genre, Movie, MoviesResponse } from './movies.types';
+import { ErrorResponse, Genre, MoviesResponse } from './movies.types';
 import instance from '../../services/axiosInstance';
 
 export const getPopularMovies = createAsyncThunk<
@@ -53,21 +53,3 @@ export const searchMovies = createAsyncThunk<
     return thunkApi.rejectWithValue({ message });
   }
 });
-
-export const getMovieRecommendations = createAsyncThunk<
-Movie[],
-string,
-{ rejectValue: ErrorResponse }
->(
-  'movies/getMovieRecommendations',
-  async (movieId: string, thunkApi) => {
-    try {
-      const { data } = await instance.get(`movie/${movieId}/recommendations`);
-      return data.results; 
-    } catch (error) {
-      const message = (error as Error).message || 'An error occurred';
-      alert(`Error fetching movie recommendations: ${message}`);
-      return thunkApi.rejectWithValue({ message });
-    }
-  }
-);

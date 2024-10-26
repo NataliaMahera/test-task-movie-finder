@@ -1,10 +1,9 @@
 import { createSlice, isPending, isRejected } from '@reduxjs/toolkit';
 import { MoviesState } from './movies.types';
-import { getGenres, getMovieRecommendations, getPopularMovies, searchMovies } from './moviesApi';
+import { getGenres, getPopularMovies, searchMovies } from './moviesApi';
 import {
   handleFulfilledGetGenres,
   handleFulfilledGetPopular,
-  handleFulfilledGetRecommendations,
   handleFulfilledSearchMovies,
   handlePending,
   handleRejected,
@@ -29,9 +28,8 @@ export const moviesSlice = createSlice({
       .addCase(getPopularMovies.fulfilled, handleFulfilledGetPopular)
       .addCase(getGenres.fulfilled, handleFulfilledGetGenres)
       .addCase(searchMovies.fulfilled, handleFulfilledSearchMovies)
-      .addCase(getMovieRecommendations.fulfilled, handleFulfilledGetRecommendations)
-      .addMatcher(isPending(getPopularMovies, searchMovies, getMovieRecommendations), handlePending)
-      .addMatcher(isRejected(getPopularMovies, searchMovies, getMovieRecommendations), handleRejected);
+      .addMatcher(isPending(getPopularMovies, searchMovies), handlePending)
+      .addMatcher(isRejected(getPopularMovies, searchMovies), handleRejected);
   },
   reducers: {
     clearMovies: (state) => {

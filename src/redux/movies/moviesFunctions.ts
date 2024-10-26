@@ -3,7 +3,6 @@ import {
   MoviesState,
   Genre,
   MoviesResponse,
-  Movie,
 } from './movies.types';
 
 export const handlePending = (state: MoviesState) => {
@@ -16,10 +15,13 @@ export const handleFulfilledGetPopular = (
 ) => {
   state.isLoading = false;
   state.error = null;
-   const existingIds = new Set(state.popularMovies.map(movie => movie.id));
-   const newMovies = payload.results.filter(movie => !existingIds.has(movie.id));
-   state.popularMovies = [...state.popularMovies, ...newMovies]; 
-   state.totalPages = payload.total_pages;
+  const existingIds = new Set(state.popularMovies.map((movie) => movie.id));
+  // фільтрації на основі поточного стану
+  const newMovies = payload.results.filter(
+    (movie) => !existingIds.has(movie.id)
+  );
+  state.popularMovies = [...state.popularMovies, ...newMovies];
+  state.totalPages = payload.total_pages;
 };
 
 export const handleFulfilledGetGenres = (
@@ -37,16 +39,6 @@ export const handleFulfilledSearchMovies = (
   state.error = null;
   state.totalPages = payload.total_pages;
   state.searchResults = [...state.searchResults, ...payload.results];
-
-};
-
-export const handleFulfilledGetRecommendations = (
-  state: MoviesState,
-  { payload }: { payload: Movie[] }
-) => {
-  state.isLoading = false;
-  state.error = null;
-  state.recommendations = payload; 
 };
 
 export const handleRejected = (
