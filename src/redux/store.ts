@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import favoritesReducer, { FavoritesState } from './favorites/favoritesSlice';
+import favoritesReducer from './favorites/favoritesSlice';
 import moviesReducer from './movies/moviesSlice'
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
@@ -12,17 +12,19 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
-import { PersistPartial } from 'redux-persist/lib/persistReducer';
+
 
 const favoritesConfig  = {
   key: 'favorites',
   storage,
 }
 
+const persistedFavoritesReducer = persistReducer(favoritesConfig, favoritesReducer);
+
 export const store = configureStore({
   reducer: { 
     movies: moviesReducer,
-    favorites: persistReducer<FavoritesState & PersistPartial>(favoritesConfig, favoritesReducer),
+    favorites: persistedFavoritesReducer, 
 },
 
 middleware: (getDefaultMiddleware) =>
