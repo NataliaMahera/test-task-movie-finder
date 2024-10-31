@@ -6,6 +6,8 @@ import {
 import { RootState } from '../redux/store';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { Movie } from '../redux/movies/movies.types';
+import { toast } from 'react-toastify';
+import { styleToastify } from './Toster';
 
 export type FavoriteMovie = Pick<
   Movie,
@@ -18,19 +20,24 @@ interface FavoriteButtonProps {
 const FavoriteButton: React.FC<FavoriteButtonProps> = ({ movie }) => {
   const dispatch = useDispatch();
   const { favoriteItems } = useSelector((state: RootState) => state.favorites);
+  const { isLoggedIn } = useSelector((state: RootState) => state.auth);
 
   const isFavorite = favoriteItems.some((favMovie) => favMovie.id === movie.id);
 
   const handleToggleFavorite = (event: React.MouseEvent) => {
     event.stopPropagation();
-    if (isFavorite) {
-      dispatch(deleteFromFavorites({ id: movie.id }));
+    if (isLoggedIn) {
+      dispatch( isFavorite ? deleteFromFavorites({ id: movie.id }) : addToFavorites(movie));
     } else {
-      dispatch(addToFavorites(movie));
-    }
+      toast.info(
+        'Log in or register to have an access to more functions.',
+        styleToastify
+      );
   };
+}
 
   return (
+    <>
     <button
       type="button"
       aria-label='Add Favorite'
@@ -49,6 +56,8 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ movie }) => {
         />
       )}
     </button>
+    </>
+
   );
 };
 
