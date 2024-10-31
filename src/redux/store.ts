@@ -21,7 +21,7 @@ const favoritesConfig  = {
 }
 
 const authConfig  = {
-  key: 'user',
+  key: 'auth',
   storage,
 }
 
