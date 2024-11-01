@@ -3,9 +3,10 @@ import { FiLogIn } from 'react-icons/fi';
 import LoginBtn from '../ReUseComponents/Button';
 import SignUpBtn from '../ReUseComponents/Button';
 import Modal from '../ReUseComponents/Modal';
-import { ModalType, TYPE } from '../AuthForms/types';
+import { ModalType } from '../AuthForms/types';
 import LoginForm from '../AuthForms/LoginForm';
 import SignupForm from '../AuthForms/SignupForm';
+import { AUTH_TYPE } from '../../core/constants';
 
 const AuthNav = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -39,14 +40,14 @@ const AuthNav = () => {
           className="hover:text-yellow-300 text-white text-lg font-medium transition duration-300 ease-in-out transform focus:outline-none"
           type="button"
           text="Log in"
-          onClick={() => openModal(TYPE.LOGIN)}
+          onClick={() => openModal(AUTH_TYPE.LOGIN)}
         />
         </div>
         <SignUpBtn
           className="px-4 py-2 bg-blue-800 rounded-lg hover:text-yellow-300 text-white text-lg font-medium transition duration-300 ease-in-out transform focus:outline-none"
           type="button"
           text="Sign Up"
-          onClick={() => openModal(TYPE.SIGNUP)}
+          onClick={() => openModal(AUTH_TYPE.SIGNUP)}
         />
       </div>
       {isOpenModal && (
