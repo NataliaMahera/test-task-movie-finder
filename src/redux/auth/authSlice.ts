@@ -13,9 +13,9 @@ export const authSlice = createSlice({
   reducers: {
     signup: (state, { payload }) => {
       const registeredUsers: User[] = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-      const userExists = registeredUsers.some(user => user.email === payload.email);
+      const isUserExists = registeredUsers.some(user => user.email === payload.email);
 
-      if (userExists) {
+      if (isUserExists) {
         toast.error('User with this email is already registered.');
         return;
       }
@@ -28,13 +28,13 @@ export const authSlice = createSlice({
     },
     login: (state, { payload }) => {
       const registeredUsers: User[] = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-      const userExists = registeredUsers.find(
+      const isUserExists = registeredUsers.find(
         (user) => user.email === payload.email && user.password === payload.password
       );
 
-      if (userExists) {
+      if (isUserExists) {
         state.isLoggedIn = true;
-        state.user = userExists;
+        state.user = isUserExists;
         toast.success('Login successful!');
       } else {
         state.isLoggedIn = false;
