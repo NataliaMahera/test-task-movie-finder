@@ -12,7 +12,5 @@ export interface User {
   export interface UserState {
     user: User | null;
     isLoggedIn: boolean;
-    isLoading: boolean;
-    error: string | null;
   }
   
