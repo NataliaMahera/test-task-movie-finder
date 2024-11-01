@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { MdOutlineClose } from 'react-icons/md';
 export interface ModalProps {
   closeModal: () => void;
-  body: React.ReactNode;
+  body?: React.ReactNode;
 }
 
 const Modal: FC<ModalProps> = ({ closeModal, body }) => {

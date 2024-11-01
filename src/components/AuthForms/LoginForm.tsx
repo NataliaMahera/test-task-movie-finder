@@ -3,8 +3,9 @@ import { useDispatch  } from 'react-redux';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/src/zod.js';
 import { login } from '../../redux/auth/authSlice';
-import { ModalProps } from './types';
-import { LogInSchema, LogInSchemaType } from '../../schema/formSchema';
+import { ModalProps } from '../ReUseComponents/Modal';
+import { LogInSchemaType } from './types';
+import { LogInSchema } from './validation';
 
 const LoginForm: FC<ModalProps> = () => {
   const dispatch = useDispatch();
