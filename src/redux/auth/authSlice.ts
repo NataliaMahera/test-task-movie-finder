@@ -6,8 +6,6 @@ import { styleToastify } from '../../components/Toster';
 const initialState: UserState = {
   user: null,
   isLoggedIn: false,
-  isLoading: false,
-  error: null,
 };
 
 export const authSlice = createSlice({
@@ -48,7 +46,7 @@ export const authSlice = createSlice({
     logout: (state) => {
       state.isLoggedIn = false;
       state.user = null;
-      toast.info('You have been logged out.', styleToastify);
+      toast.success('You have been logged out.', styleToastify);
     },
   },
 });
