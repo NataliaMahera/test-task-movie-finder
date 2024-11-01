@@ -1,20 +1,35 @@
-import { FC } from 'react';
-import { IFormInput, ModalProps } from './form.types';
+import { FC, useEffect } from 'react';
+import { ModalProps } from './form.types';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useDispatch  } from 'react-redux';
+import { useDispatch, useSelector  } from 'react-redux';
 import { login } from '../../redux/auth/authSlice';
+import { LogInSchema, LogInSchemaType } from '../../schema/formSchema';
+import { zodResolver } from '@hookform/resolvers/zod/src/zod.js';
+import { useNavigate } from 'react-router-dom';
+import { RootState } from '../../redux/store';
 
 
 const LoginForm: FC<ModalProps> = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isLoggedIn } = useSelector((state: RootState) => state.auth);
   
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IFormInput>();
-  const dispatch = useDispatch();
+  } = useForm<LogInSchemaType>({ resolver: zodResolver(LogInSchema) });
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => dispatch(login(data));
+
+  const onSubmit: SubmitHandler<LogInSchemaType> = (data) => {
+    dispatch(login(data))
+  }
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate('/favorites');
+    }
+  }, [isLoggedIn, navigate]);
 
   return (
     <form
@@ -33,17 +48,11 @@ const LoginForm: FC<ModalProps> = () => {
       <input
         type="email"
         placeholder="example@email.com"
-        {...register('email', {
-          required: 'Email is required',
-          pattern: {
-            value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
-            message: 'Email is not valid',
-          },
-        })}
+        {...register('email')}
         className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
       {errors.email && (
-        <p className="text-red-500 text-xs italic">{errors.email.message}</p>
+        <p className="text-red-500 text-xs italic">{errors.email?.message}</p>
       )}
 
       <label className="block text-gray-700 text-sm font-bold mt-4 mb-2">
@@ -52,17 +61,11 @@ const LoginForm: FC<ModalProps> = () => {
       <input
         type="password"
         placeholder="at least 6 characters"
-        {...register('password', {
-          required: 'Password is required',
-          minLength: {
-            value: 6,
-            message: 'Password must be at least 6 characters',
-          },
-        })}
+        {...register('password')}
         className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
       {errors.password && (
-        <p className="text-red-500 text-xs italic">{errors.password.message}</p>
+        <p className="text-red-500 text-xs italic">{errors.password?.message}</p>
       )}
       <button
         type="submit"

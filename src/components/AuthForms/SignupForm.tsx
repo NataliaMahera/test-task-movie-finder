@@ -1,8 +1,11 @@
 import { FC } from 'react';
-import { IFormInput, ModalProps } from './form.types';
+import { ModalProps } from './form.types';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { signup } from '../../redux/auth/authSlice';
+import { zodResolver } from '@hookform/resolvers/zod/src/zod.js';
+import { useNavigate } from 'react-router-dom';
+import { SignUpSchema, SignUpSchemaType } from '../../schema/formSchema';
 
 const SignupForm: FC<ModalProps> = () => {
 
@@ -10,10 +13,15 @@ const SignupForm: FC<ModalProps> = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IFormInput>();
-  const dispatch = useDispatch();
+  } = useForm<SignUpSchemaType>({ resolver: zodResolver(SignUpSchema) });
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => dispatch(signup(data));
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const onSubmit: SubmitHandler<SignUpSchemaType> = (data) => {
+    dispatch(signup(data)) 
+    navigate('/favorites')
+  }
 
   return (
     <form
@@ -21,7 +29,7 @@ const SignupForm: FC<ModalProps> = () => {
       className="max-w-md mx-auto px-8 pt-6 pb-8 mb-4"
     >
       <h1 className="text-3xl text-center text-blue-500 font-semibold mb-4">
-        Sign Up
+        Create New Account
       </h1>
       <p className="text-md mb-6 text-gray-600">
         Please fill in all required fields to create your account.
@@ -32,11 +40,11 @@ const SignupForm: FC<ModalProps> = () => {
       <input
         type="text"
         placeholder="first and last name"
-        {...register('username', { required: 'Username is required' })}
+        {...register('username')}
         className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
       {errors.username && (
-        <p className="text-red-500 text-xs italic">{errors.username.message}</p>
+        <p className="text-red-500 text-xs italic">{errors.username?.message}</p>
       )}
 
       <label className="block text-gray-700 text-sm font-bold mt-4 mb-2">
@@ -45,17 +53,11 @@ const SignupForm: FC<ModalProps> = () => {
       <input
         type="email"
         placeholder="example@email.com"
-        {...register('email', {
-          required: 'Email is required',
-          pattern: {
-            value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
-            message: 'Email is not valid',
-          },
-        })}
+        {...register('email')}
         className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
       {errors.email && (
-        <p className="text-red-500 text-xs italic">{errors.email.message}</p>
+        <p className="text-red-500 text-xs italic">{errors.email?.message}</p>
       )}
 
       <label className="block text-gray-700 text-sm font-bold mt-4 mb-2">
@@ -64,13 +66,7 @@ const SignupForm: FC<ModalProps> = () => {
       <input
         type="password"
         placeholder="at least 6 characters"
-        {...register('password', {
-          required: 'Password is required',
-          minLength: {
-            value: 6,
-            message: 'Password must be at least 6 characters',
-          },
-        })}
+        {...register('password')}
         className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
       {errors.password && (
