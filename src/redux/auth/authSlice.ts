@@ -45,7 +45,7 @@ export const authSlice = createSlice({
     logout: (state) => {
       state.isLoggedIn = false;
       state.user = null;
-      toast.success('You have been logged out.');
+      toast.info('You have been logged out.');
     },
   },
 });
