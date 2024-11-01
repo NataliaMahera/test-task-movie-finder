@@ -12,9 +12,3 @@ export interface ModalProps {
   body?: React.ReactNode;
   type?: string;
 }
-
-export interface IFormInput {
-  username: string;
-  email?: string;
-  password: string;
-}
