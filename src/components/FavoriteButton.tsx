@@ -7,7 +7,6 @@ import {
 } from '../redux/favorites/favoritesSlice';
 import { RootState } from '../redux/store';
 import { Movie } from '../redux/movies/movies.types';
-import { styleToastify } from './Toster';
 
 export type FavoriteMovie = Pick<
   Movie,
@@ -30,8 +29,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ movie }) => {
       dispatch( isFavorite ? deleteFromFavorites({ id: movie.id }) : addToFavorites(movie));
     } else {
       toast.info(
-        'Log in or register to have an access to more functions.',
-        styleToastify
+        'Log in or register to have an access to more functions.'
       );
   };
 }

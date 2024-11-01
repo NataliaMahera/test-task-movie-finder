@@ -1,8 +1,9 @@
 import { lazy, Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import Layout from './components/Layout';
 import { Loader } from './components/Loader';
+import { styleToastify } from './components/Toster';
+import Layout from './components/Layout';
 import PrivateRoutes from './routes/PrivateRoutes';
 
 const Home = lazy(() => import('./pages/Home'));
@@ -27,7 +28,7 @@ function App() {
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Suspense>
-      <ToastContainer/>
+      <ToastContainer {...styleToastify}/>
     </Layout>
   );
 }

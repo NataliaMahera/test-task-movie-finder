@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import { User, UserState } from './auth.types';
-import { styleToastify } from '../../components/Toster';
 
 const initialState: UserState = {
   user: null,
@@ -17,7 +16,7 @@ export const authSlice = createSlice({
       const userExists = registeredUsers.some(user => user.email === payload.email);
 
       if (userExists) {
-        toast.error('User with this email is already registered.', styleToastify);
+        toast.error('User with this email is already registered.');
         return;
       }
 
@@ -25,7 +24,7 @@ export const authSlice = createSlice({
       localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
       state.isLoggedIn = true;
       state.user = payload;
-      toast.success('Registration successful!', styleToastify);
+      toast.success('Registration successful!');
     },
     login: (state, { payload }) => {
       const registeredUsers: User[] = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
@@ -36,17 +35,17 @@ export const authSlice = createSlice({
       if (userExists) {
         state.isLoggedIn = true;
         state.user = userExists;
-        toast.success('Login successful!', styleToastify);
+        toast.success('Login successful!');
       } else {
         state.isLoggedIn = false;
         state.user = null;
-        toast.error('User not found. Please check your credentials.', styleToastify);
+        toast.error('User not found. Please check your credentials.');
       }
     },
     logout: (state) => {
       state.isLoggedIn = false;
       state.user = null;
-      toast.success('You have been logged out.', styleToastify);
+      toast.success('You have been logged out.');
     },
   },
 });
