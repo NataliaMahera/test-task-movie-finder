@@ -2,8 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import Logo from './Logo';
-import AuthNav from './Profile/AuthNav';
-import UserMenu from './Profile/UserMenu';
+import AuthControl from './Profile/AuthControl';
 
 const Header: React.FC = () => {
   const { isLoggedIn } = useSelector((state: RootState) => state.auth);
@@ -45,7 +44,7 @@ const Header: React.FC = () => {
           </li>
         </ul>
       </nav>
-      {isLoggedIn ? <UserMenu /> : <AuthNav />}
+      <AuthControl/>
     </header>
   );
 };
