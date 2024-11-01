@@ -1,13 +1,10 @@
 import { z } from 'zod';
 
-const emailRegex = /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/;
-
 export const BaseFormSchema = z.object({
   email: z
     .string()
     .min(1, { message: 'Email is required' })
-    .email()
-    .regex(emailRegex, { message: 'Must be a valid email' }),
+    .email(),
   password: z
     .string()
     .min(1, { message: 'Password is required' })
