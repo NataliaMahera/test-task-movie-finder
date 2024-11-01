@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import { User, UserState } from './auth.types';
+import { REGISTER_USER_KEY } from '../../core/constants';
 
 const initialState: UserState = {
   user: null,
@@ -12,7 +13,7 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     signup: (state, { payload }) => {
-      const registeredUsers: User[] = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+      const registeredUsers: User[] = JSON.parse(localStorage.getItem(REGISTER_USER_KEY) || '[]');
       const isUserExists = registeredUsers.some(user => user.email === payload.email);
 
       if (isUserExists) {
@@ -21,13 +22,13 @@ export const authSlice = createSlice({
       }
 
       registeredUsers.push(payload);
-      localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+      localStorage.setItem(REGISTER_USER_KEY, JSON.stringify(registeredUsers));
       state.isLoggedIn = true;
       state.user = payload;
       toast.success('Registration successful!');
     },
     login: (state, { payload }) => {
-      const registeredUsers: User[] = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+      const registeredUsers: User[] = JSON.parse(localStorage.getItem(REGISTER_USER_KEY) || '[]');
       const isUserExists = registeredUsers.find(
         (user) => user.email === payload.email && user.password === payload.password
       );
