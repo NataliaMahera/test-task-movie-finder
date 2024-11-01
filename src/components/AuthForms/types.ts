@@ -5,10 +5,3 @@ export const TYPE = {
     SIGNUP: 'SIGNUP',
   } as const;
 
-export interface ModalProps {
-  closeModal: () => void;
-  isOpen?: boolean;
-  modalData?: ModalType;
-  body?: React.ReactNode;
-  type?: string;
-}

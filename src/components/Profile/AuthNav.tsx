@@ -52,7 +52,6 @@ const AuthNav = () => {
       {isOpenModal && (
         <Modal
           closeModal={closeModal}
-          modalData={modalType}
           body={getModalContent()}
         />
       )}
