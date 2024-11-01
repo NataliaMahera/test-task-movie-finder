@@ -1,11 +1,11 @@
 import { useState } from 'react';
+import { FiLogIn } from 'react-icons/fi';
 import LoginBtn from '../ReUseComponents/Button';
 import SignUpBtn from '../ReUseComponents/Button';
 import Modal from '../ReUseComponents/Modal';
-import { ModalType, TYPE } from '../AuthForms/form.types';
+import { ModalType, TYPE } from '../AuthForms/types';
 import LoginForm from '../AuthForms/LoginForm';
 import SignupForm from '../AuthForms/SignupForm';
-import { FiLogIn } from 'react-icons/fi';
 
 const AuthNav = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { User, UserState } from './auth.types';
 import { toast } from 'react-toastify';
+import { User, UserState } from './auth.types';
 import { styleToastify } from '../../components/Toster';
 
 const initialState: UserState = {

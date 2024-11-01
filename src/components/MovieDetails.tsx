@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { Movie } from '../redux/movies/movies.types';
 import { getMovieDetails } from '../services/themoviedbAPI';
 import { Loader } from '../components/Loader';
-import { Movie } from '../redux/movies/movies.types';
 import RecommendedMovies from './RecommendedMovies';
 import MovieContent from './MovieDetailsContent';
 import GoBackButton from './GoBackBtn';
-import { useParams } from 'react-router-dom';
 
 const MovieDetails: React.FC = () => {
   const { movieId } = useParams();

@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { ModalProps } from '../AuthForms/form.types';
 import { MdOutlineClose } from 'react-icons/md';
+import { ModalProps } from '../AuthForms/types';
 
 const Modal: FC<ModalProps> = ({ closeModal, body }) => {
   const portal = document.getElementById('portal') as HTMLElement;

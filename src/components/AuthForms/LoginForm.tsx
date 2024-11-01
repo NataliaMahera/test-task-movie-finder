@@ -2,8 +2,8 @@ import { FC } from 'react';
 import { useDispatch  } from 'react-redux';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/src/zod.js';
-import { ModalProps } from './form.types';
 import { login } from '../../redux/auth/authSlice';
+import { ModalProps } from './types';
 import { LogInSchema, LogInSchemaType } from '../../schema/formSchema';
 
 const LoginForm: FC<ModalProps> = () => {

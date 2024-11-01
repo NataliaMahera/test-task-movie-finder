@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
+import { toast } from 'react-toastify';
 import {
   addToFavorites,
   deleteFromFavorites,
 } from '../redux/favorites/favoritesSlice';
 import { RootState } from '../redux/store';
-import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { Movie } from '../redux/movies/movies.types';
-import { toast } from 'react-toastify';
 import { styleToastify } from './Toster';
 
 export type FavoriteMovie = Pick<

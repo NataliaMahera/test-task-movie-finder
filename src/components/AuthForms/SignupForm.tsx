@@ -1,10 +1,10 @@
 import { FC } from 'react';
-import { ModalProps } from './form.types';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { signup } from '../../redux/auth/authSlice';
-import { zodResolver } from '@hookform/resolvers/zod/src/zod.js';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod/src/zod.js';
+import { signup } from '../../redux/auth/authSlice';
+import { ModalProps } from './types';
 import { SignUpSchema, SignUpSchemaType } from '../../schema/formSchema';
 
 const SignupForm: FC<ModalProps> = () => {

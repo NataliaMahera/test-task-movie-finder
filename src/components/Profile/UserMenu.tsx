@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
-import { logout } from '../../redux/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
+import { RootState } from '../../redux/store';
+import { logout } from '../../redux/auth/authSlice';
 
 const UserMenu = () => {
   const dispatch = useDispatch();

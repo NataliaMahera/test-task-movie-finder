@@ -1,9 +1,9 @@
 import { lazy, Suspense } from 'react';
-import Layout from './components/Layout';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import Layout from './components/Layout';
 import { Loader } from './components/Loader';
 import PrivateRoutes from './routes/PrivateRoutes';
-import { ToastContainer } from 'react-toastify';
 
 const Home = lazy(() => import('./pages/Home'));
 const Favorites = lazy(() => import('./pages/Favorites'));
