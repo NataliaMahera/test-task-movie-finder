@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { FiLogIn } from 'react-icons/fi';
+import { ModalType } from '../AuthForms/types';
+import { AUTH_TYPE } from '../../core/constants';
 import LoginBtn from '../ReUseComponents/Button';
 import SignUpBtn from '../ReUseComponents/Button';
+import LoginFormContent from '../AuthForms/LoginFormContent';
+import SignupFormContent from '../AuthForms/SignupFormContent';
 import Modal from '../ReUseComponents/Modal';
-import { ModalType } from '../AuthForms/types';
-import LoginForm from '../AuthForms/LoginForm';
-import SignupForm from '../AuthForms/SignupForm';
-import { AUTH_TYPE } from '../../core/constants';
 
 const AuthNav = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -24,9 +24,9 @@ const AuthNav = () => {
 
   const getModalContent = () => {
     if (modalType === 'LOGIN') {
-      return <LoginForm closeModal={closeModal} />;
+      return <LoginFormContent />;
     } else if (modalType === 'SIGNUP') {
-      return <SignupForm closeModal={closeModal} />;
+      return <SignupFormContent />;
     }
     return null;
   };

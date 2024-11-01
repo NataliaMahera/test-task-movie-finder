@@ -4,11 +4,10 @@ import { useDispatch } from 'react-redux';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/src/zod.js';
 import { signup } from '../../redux/auth/authSlice';
-import { ModalProps } from '../ReUseComponents/Modal';
 import { SignUpSchemaType } from './types';
 import { SignUpSchema } from './validation';
 
-const SignupForm: FC<ModalProps> = () => {
+const SignupFormContent: FC = () => {
 
   const {
     register,
@@ -82,4 +81,4 @@ const SignupForm: FC<ModalProps> = () => {
   );
 };
 
-export default SignupForm;
+export default SignupFormContent;
