@@ -23,15 +23,15 @@ const LoginForm: FC<ModalProps> = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="max-w-md mx-auto px-8 pt-6 pb-8 mb-4"
+      className="max-w-md mx-auto px-6 sm:px-8 pt-4 sm:pt-6 pb-6 sm:pb-8 mb-4 w-full"
     >
-      <h1 className="text-3xl text-center text-blue-500 font-semibold mb-4">
+      <h1 className="text-2xl sm:text-3xl text-center text-blue-500 font-semibold mb-3 sm:mb-4">
         Log In
       </h1>
-      <p className="text-md mb-6 text-center text-gray-600">
+      <p className="text-sm sm:text-md mb-4 sm:mb-6 text-center text-gray-600">
         Welcome back! Please enter your credentials to access your account.
       </p>
-      <label className="block text-gray-700 text-sm font-bold mt-4 mb-2">
+      <label className="block text-gray-700 text-sm font-bold mt-3 sm:mt-4 mb-1 sm:mb-2">
         Email
       </label>
       <input
@@ -44,7 +44,7 @@ const LoginForm: FC<ModalProps> = () => {
         <p className="text-red-500 text-xs italic">{errors.email?.message}</p>
       )}
 
-      <label className="block text-gray-700 text-sm font-bold mt-4 mb-2">
+      <label className="block text-gray-700 text-sm font-bold mt-3 sm:mt-4 mb-1 sm:mb-2">
         Password
       </label>
       <input
@@ -58,7 +58,7 @@ const LoginForm: FC<ModalProps> = () => {
       )}
       <button
         type="submit"
-        className="transition-all duration-300 ease-in-out rounded w-full mt-6 p-3 font-bold py-2 px-4 bg-gradient-to-r from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800 hover:shadow-xl"
+        className="transition-all duration-300 ease-in-out rounded w-full mt-4 sm:mt-6 p-2 sm:p-3 font-bold py-2 px-4 bg-gradient-to-r from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800 hover:shadow-xl"
       >
         Log In
       </button>

@@ -32,8 +32,12 @@ const Modal: FC<ModalProps> = ({ closeModal, body }) => {
       onClick={handleOverlayClick}
       className="fixed inset-0 bg-black bg-opacity-50 z-20 flex justify-center items-center"
     >
-      <div className="bg-gray-200 p-5 rounded relative shadow-md">
-        <MdOutlineClose className="absolute top-2 right-2 fill-black cursor-pointer" size={30} onClick={closeModal} />
+      <div className="bg-gray-200 p-4 sm:p-5 rounded relative shadow-md max-w-xs sm:max-w-sm w-full">
+        <MdOutlineClose
+          className="absolute top-2 right-2 fill-black cursor-pointer"
+          size={30}
+          onClick={closeModal}
+        />
         {body}
       </div>
     </div>,
