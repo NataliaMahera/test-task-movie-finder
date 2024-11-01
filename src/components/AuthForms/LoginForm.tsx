@@ -1,18 +1,13 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { ModalProps } from './form.types';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useDispatch, useSelector  } from 'react-redux';
+import { useDispatch  } from 'react-redux';
 import { login } from '../../redux/auth/authSlice';
 import { LogInSchema, LogInSchemaType } from '../../schema/formSchema';
 import { zodResolver } from '@hookform/resolvers/zod/src/zod.js';
-import { useNavigate } from 'react-router-dom';
-import { RootState } from '../../redux/store';
-
 
 const LoginForm: FC<ModalProps> = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { isLoggedIn } = useSelector((state: RootState) => state.auth);
   
   const {
     register,
@@ -24,12 +19,6 @@ const LoginForm: FC<ModalProps> = () => {
   const onSubmit: SubmitHandler<LogInSchemaType> = (data) => {
     dispatch(login(data))
   }
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      navigate('/favorites');
-    }
-  }, [isLoggedIn, navigate]);
 
   return (
     <form
