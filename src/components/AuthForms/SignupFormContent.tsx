@@ -43,10 +43,7 @@ const SignupFormContent: FC = () => {
         {...register('username')}
         className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
-      {errors.username && (
-        <p className="text-red-500 text-xs italic">{errors.username.message}</p>
-      )}
-
+        <p className="text-red-500 text-xs italic">{errors.username?.message}</p>
       <label className="block text-gray-700 text-sm font-bold mt-3 sm:mt-4 mb-1 sm:mb-2">
         Email
       </label>
@@ -56,10 +53,7 @@ const SignupFormContent: FC = () => {
         {...register('email')}
         className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
-      {errors.email && (
-        <p className="text-red-500 text-xs italic">{errors.email.message}</p>
-      )}
-
+        <p className="text-red-500 text-xs italic">{errors.email?.message}</p>
       <label className="block text-gray-700 text-sm font-bold mt-3 sm:mt-4 mb-1 sm:mb-2">
         Password
       </label>
@@ -69,9 +63,7 @@ const SignupFormContent: FC = () => {
         {...register('password')}
         className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
-      {errors.password && (
-        <p className="text-red-500 text-xs italic">{errors.password.message}</p>
-      )}
+        <p className="text-red-500 text-xs italic">{errors.password?.message}</p>
       <button
         className="transition-all duration-300 ease-in-out rounded w-full mt-4 sm:mt-6 p-2 sm:p-3 font-bold py-2 px-4 bg-gradient-to-r from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800 hover:shadow-xl"
       >
