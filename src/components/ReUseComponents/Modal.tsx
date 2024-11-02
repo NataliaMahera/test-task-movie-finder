@@ -2,17 +2,20 @@ import { FC, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { MdOutlineClose } from 'react-icons/md';
 export interface ModalProps {
-  closeModal: () => void;
-  body?: React.ReactNode;
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
 }
 
-const Modal: FC<ModalProps> = ({ closeModal, body }) => {
+const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
   const portal = document.getElementById('portal') as HTMLElement;
 
   useEffect(() => {
+    if (!isOpen) return;
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        closeModal();
+        onClose();
       }
     };
 
@@ -23,13 +26,16 @@ const Modal: FC<ModalProps> = ({ closeModal, body }) => {
       window.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = 'auto';
     };
-  }, []);
+  }, [isOpen]);
 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
-      closeModal();
+      onClose();
     }
   };
+
+  if (!isOpen) return null;
+
   return createPortal(
     <div
       onClick={handleOverlayClick}
@@ -39,9 +45,9 @@ const Modal: FC<ModalProps> = ({ closeModal, body }) => {
         <MdOutlineClose
           className="absolute top-2 right-2 fill-black cursor-pointer"
           size={30}
-          onClick={closeModal}
+          onClick={onClose}
         />
-        {body}
+        {children}
       </div>
     </div>,
     portal

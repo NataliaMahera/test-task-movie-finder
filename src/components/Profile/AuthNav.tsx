@@ -32,25 +32,25 @@ const AuthNav = () => {
   return (
     <>
       <div className="flex gap-5">
-          <button
-            className="hover:text-yellow-300 flex items-center gap-2 justify-center text-white text-lg font-medium transition duration-300 ease-in-out transform focus:outline-none"
-            type="button"
-            onClick={() => openModal(AUTH_TYPE.LOGIN)}
-          >
-             <FiLogIn className="w-6 h-6 stroke-yellow-300" />
-            Log in
-          </button>
-          <button
-            className="px-4 py-2 bg-blue-800 rounded-lg hover:text-yellow-300 text-white text-lg font-medium transition duration-300 ease-in-out transform focus:outline-none"
-            type="button"
-            onClick={() => openModal(AUTH_TYPE.SIGNUP)}
-          >
-            Sign Up
-          </button>
+        <button
+          className="hover:text-yellow-300 flex items-center gap-2 justify-center text-white text-lg font-medium transition duration-300 ease-in-out transform focus:outline-none"
+          type="button"
+          onClick={() => openModal(AUTH_TYPE.LOGIN)}
+        >
+          <FiLogIn className="w-6 h-6 stroke-yellow-300" />
+          Log in
+        </button>
+        <button
+          className="px-4 py-2 bg-blue-800 rounded-lg hover:text-yellow-300 text-white text-lg font-medium transition duration-300 ease-in-out transform focus:outline-none"
+          type="button"
+          onClick={() => openModal(AUTH_TYPE.SIGNUP)}
+        >
+          Sign Up
+        </button>
       </div>
-      {isOpenModal && (
-        <Modal closeModal={closeModal} body={getModalContent()} />
-      )}
+      <Modal onClose={closeModal} isOpen={isOpenModal}>
+        {getModalContent()}
+      </Modal>
     </>
   );
 };
