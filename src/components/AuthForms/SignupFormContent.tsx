@@ -34,7 +34,6 @@ const SignupFormContent: FC = () => {
       <p className="text-sm sm:text-md mb-4 sm:mb-6 text-center text-gray-600">
         Please fill in all required fields to create your account.
       </p>
-      {/* <p className="text-red-500 text-xs italic">{errors.username?.message}</p>  */}
       <FormInput
         label="Username"
         name="username"
