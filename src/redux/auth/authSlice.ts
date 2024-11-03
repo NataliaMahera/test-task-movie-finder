@@ -29,13 +29,13 @@ export const authSlice = createSlice({
     },
     login: (state, { payload }) => {
       const registeredUsers: User[] = JSON.parse(localStorage.getItem(REGISTER_USER_KEY) || '[]');
-      const isUserExists = registeredUsers.find(
+      const existingUser = registeredUsers.find(
         (user) => user.email === payload.email && user.password === payload.password
       );
 
-      if (isUserExists) {
+      if (existingUser) {
         state.isLoggedIn = true;
-        state.user = isUserExists;
+        state.user = existingUser;
         toast.success('Login successful!');
       } else {
         state.isLoggedIn = false;
