@@ -31,21 +31,21 @@ const AuthNav = () => {
 
   return (
     <>
-      <div className="flex gap-5">
+      <div className="flex flex-row gap-2 sm:gap-5">
         <button
-          className="hover:text-yellow-300 flex items-center gap-2 justify-center text-white text-lg font-medium transition duration-300 ease-in-out transform focus:outline-none"
+          className="w-full sm:w-auto hover:text-yellow-300 flex items-center gap-2 justify-center text-white text-sm sm:text-lg font-medium transition duration-300 ease-in-out transform focus:outline-none"
           type="button"
           onClick={() => openModal(AUTH_TYPE.LOGIN)}
         >
-          <FiLogIn className="w-6 h-6 stroke-yellow-300" />
-          Log in
+          <FiLogIn className="w-5 h-5 sm:w-6 sm:h-6 stroke-yellow-300" />
+          LogIn
         </button>
         <button
-          className="px-4 py-2 bg-blue-800 rounded-lg hover:text-yellow-300 text-white text-lg font-medium transition duration-300 ease-in-out transform focus:outline-none"
+          className="w-full sm:w-auto px-1 sm:px-4 py-2 bg-blue-800 rounded-lg hover:text-yellow-300 text-white text-sm sm:text-lg font-medium transition duration-300 ease-in-out transform focus:outline-none"
           type="button"
           onClick={() => openModal(AUTH_TYPE.SIGNUP)}
         >
-          Sign Up
+          SignUp
         </button>
       </div>
       <Modal onClose={closeModal} isOpen={isOpenModal}>

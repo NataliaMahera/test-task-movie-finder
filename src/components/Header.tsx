@@ -8,10 +8,10 @@ const Header: React.FC = () => {
   const { isLoggedIn } = useSelector((state: RootState) => state.auth);
 
   return (
-    <header className="px-8 bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg w-full flex justify-center items-center">
+    <header className="md:fixed top-0 left-0 z-50 w-full px-2 sm:px-8 bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg flex justify-center items-center">
       <Logo />
-      <nav className="max-w-7xl mx-auto px-6 py-8">
-        <ul className="flex justify-center space-x-10">
+      <nav className="max-w-5xl mx-auto px-6 py-8">
+        <ul className="flex justify-center items-center space-x-10">
           <li>
             <NavLink
               to="/"

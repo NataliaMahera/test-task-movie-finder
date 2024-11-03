@@ -9,7 +9,7 @@ const Favorites: React.FC = () => {
 
   return (
     <>
-    <section className="my-8 px-4 flex-1 sm:px-10 w-full">
+    <section className="my-8 px-4 sm:px-10 md:min-w-[1000px]">
       <h1 className=" break-words w-[320px] text-3xl font-bold mb-4">
         Favorite Movies
       </h1>

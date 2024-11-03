@@ -36,12 +36,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   return (
-    <div className="relative mb-4 flex items-center">
+    <div className="relative mb-4 flex w-full items-center">
       <FiSearch className="absolute left-3 top-4 text-gray-600" />
       <input
         type="text"
         placeholder="Search movies..."
-        className="border text-lg pl-8 rounded-lg p-2 w-full sm:w-[650px] text-gray-800"
+        className="border text-lg pl-8 rounded-lg p-2 w-full lg:w-[650px] text-gray-800"
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
       />
