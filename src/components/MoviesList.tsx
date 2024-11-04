@@ -1,6 +1,7 @@
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../redux/store';
-import { useEffect, useState } from 'react';
+import { clearMovies } from '../redux/movies/moviesSlice';
 import {
   getGenres,
   getPopularMovies,
@@ -9,7 +10,6 @@ import {
 import { Loader } from './Loader';
 import SearchBar from './SearchBar';
 import MovieItem from './MovieItem';
-import { clearMovies } from '../redux/movies/moviesSlice';
 import PaginationButton from './PaginationButton';
 
 const MovieList: React.FC = () => {

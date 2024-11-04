@@ -8,8 +8,9 @@ const Favorites: React.FC = () => {
   const { favoriteItems } = useSelector((state: RootState) => state.favorites);
 
   return (
-    <section className="my-8 px-4 flex-1 sm:px-10 w-full">
-      <h1 className="sm:text-4xl break-words w-[320px] text-3xl font-bold mb-4">
+    <>
+    <section className="my-8 px-4 sm:px-10 md:min-w-[1000px]">
+      <h1 className=" break-words w-[320px] text-3xl font-bold mb-4">
         Favorite Movies
       </h1>
       <hr className="border-t border-gray-300 mb-14" />
@@ -24,6 +25,8 @@ const Favorites: React.FC = () => {
       )}
       <ScrollUpBtn/>
     </section>
+    </>
+    
   );
 };
 

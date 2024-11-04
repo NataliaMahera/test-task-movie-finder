@@ -6,7 +6,7 @@ const MoviesList = lazy(() => import('../components/MoviesList'));
 
 const Home: React.FC = () => {
   return (
-    <section className="my-8 px-4 sm:px-10 w-full">
+    <section className="my-8 px-4 sm:px-10">
       <Suspense fallback={<Loader />}>
         <MoviesList />
       </Suspense>

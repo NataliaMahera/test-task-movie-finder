@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Movie } from '../redux/movies/movies.types';
 import { getMovieRecommendations } from '../services/themoviedbAPI';
 import PaginationButton from './PaginationButton';
 import { Loader } from './Loader';
 import defaultImg from '../assets/default-img.jpg';
 import FavoriteButton from './FavoriteButton';
-import { useNavigate } from 'react-router-dom';
 
 interface RecommendedMoviesProps {
   movieId: string | undefined;

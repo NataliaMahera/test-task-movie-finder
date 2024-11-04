@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
-import { RootState } from '../redux/store';
 import { useNavigate } from 'react-router-dom';
+import { RootState } from '../redux/store';
 import defaultImg from '../assets/default-img.jpg';
 import FavoriteButton, { FavoriteMovie } from './FavoriteButton'; 
 

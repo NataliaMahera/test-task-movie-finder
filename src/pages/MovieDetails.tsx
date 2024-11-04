@@ -6,7 +6,7 @@ const MovieDetails = lazy(()=> import ('../components/MovieDetails'));
 
 const MovieDetailsPage: React.FC = () => {
   return (
-    <section className="my-8 w-full">
+    <section className="my-8">
       <Suspense fallback={<Loader />}>
         <MovieDetails />
       </Suspense>
