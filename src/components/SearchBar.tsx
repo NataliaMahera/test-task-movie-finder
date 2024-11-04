@@ -2,41 +2,48 @@ import { useState, useEffect } from 'react';
 import { AiOutlineCloseCircle } from 'react-icons/ai'; // Пакет для іконок
 import { FiSearch } from 'react-icons/fi';
 import { debounce } from "lodash"
+import { useDispatch } from 'react-redux';
+import { clearMovies } from '../redux/movies/moviesSlice';
+import { getPopularMovies } from '../redux/movies/moviesApi';
+import { AppDispatch } from '../redux/store';
 
 interface SearchBarProps {
   searchQuery: string;
-  setSearchQuery: (query: string) => void;
-  resetMovies: () => void;
+  setQuery: (query: string) => void;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
   searchQuery,
-  setSearchQuery,
-  resetMovies
+  setQuery,
+  setPage
 }) => {
   const [inputValue, setInputValue] = useState(searchQuery);
+  const dispatch = useDispatch<AppDispatch>();
 
   const debouncedSetSearchQuery = debounce((value: string) => {
-    setSearchQuery(value);
+    setQuery(value);
   }, 1000);
 
   useEffect(() => {
     if (inputValue) {
       debouncedSetSearchQuery(inputValue);
     } else {
-      setSearchQuery('')
+      setQuery('')
     }
     
     return () => debouncedSetSearchQuery.cancel();
-  }, [debouncedSetSearchQuery, inputValue, setSearchQuery]);
+  }, [debouncedSetSearchQuery, inputValue, setQuery]);
 
   const handleReset = () => {
     setInputValue('');
-    resetMovies();
+    setPage(1);
+    dispatch(clearMovies());
+    dispatch(getPopularMovies(1));
   };
 
   return (
-    <div className="relative mb-4 flex w-full items-center">
+    <div className="relative mb-4 flex w-full sm:w-auto items-center">
       <FiSearch className="absolute left-3 top-4 text-gray-600" />
       <input
         type="text"

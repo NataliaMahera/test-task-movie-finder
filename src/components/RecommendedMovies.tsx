@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Movie } from '../redux/movies/movies.types';
 import { getMovieRecommendations } from '../services/themoviedbAPI';
-import PaginationButton from './PaginationButton';
 import { Loader } from './Loader';
 import defaultImg from '../assets/default-img.jpg';
 import FavoriteButton from './FavoriteButton';
+import InfiniteScroll from './InfiniteScroll';
 
 interface RecommendedMoviesProps {
   movieId: string | undefined;
@@ -45,20 +45,10 @@ const RecommendedMovies: React.FC<RecommendedMoviesProps> = ({
     fetchRecommendations();
   }, [movieId, currentPage]);
 
-  const handleLoadMore = () => {
-    if (currentPage < totalPages) {
-      setTimeout(() => {
-        setCurrentPage((prevPage) => prevPage + 1);
-      }, 500);
-    }
-  };
-
   const handleSelectMovie = (id: string) => {
     onSelectMovie(id);
     navigate(`/movie/${id}`);
   };
-
-  const showLoadMore = recommendations.length >= 20 && currentPage < totalPages;
 
   if (error) return <div className="text-red-500">Error: {error}</div>;
 
@@ -107,14 +97,13 @@ const RecommendedMovies: React.FC<RecommendedMoviesProps> = ({
           </li>
         )}
       </ul>
-
-      {showLoadMore && !isLoading && !error && (
-        <PaginationButton
-          currentPage={currentPage}
-          totalPages={totalPages}
-          handleLoadMore={handleLoadMore}
-        />
-      )}
+      
+        <InfiniteScroll
+        currentPage={currentPage}
+        totalPages={totalPages}
+        setCurrentPage={setCurrentPage}
+        isLoading={isLoading}
+      />
     </div>
   );
 };

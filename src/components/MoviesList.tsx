@@ -10,7 +10,7 @@ import {
 import { Loader } from './Loader';
 import SearchBar from './SearchBar';
 import MovieItem from './MovieItem';
-import PaginationButton from './PaginationButton';
+import InfiniteScroll from './InfiniteScroll';
 
 const MovieList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -26,48 +26,29 @@ const MovieList: React.FC = () => {
       dispatch(getPopularMovies(currentPage));
       dispatch(getGenres());
     }
+  }, [currentPage, dispatch, setCurrentPage, searchQuery]);
 
-    return () => {
-      if (searchQuery) {
-        dispatch(clearMovies());
-      }
-    };
-  }, [searchQuery, dispatch, currentPage]);
+  useEffect(() => {
+    if (searchQuery) {
+      dispatch(clearMovies());
+    }
+  }, [searchQuery, dispatch]);
 
   if (error) {
     return <div>Error: {error.message}</div>;
   }
 
-  const handleLoadMore = () => {
-    if (currentPage < totalPages) {
-      setTimeout(() => {
-        setCurrentPage((prevPage) => prevPage + 1);
-      }, 500); 
-    }
-  };
-
-  const resetMovies = () => {
-    setSearchQuery('');
-    setCurrentPage(1);
-    dispatch(clearMovies());
-    dispatch(getPopularMovies(1));
-  };
-
-  const showLoadMore =
-    (searchQuery ? searchResults.length : popularMovies.length) >= 20 &&
-    currentPage < totalPages;
-
   return (
     <>
       {isLoading && <Loader />}
       <div className="flex flex-col sm:flex-row sm:justify-between">
-        <h1 className=" break-words min-w-[300px] text-3xl font-bold mb-4">
+        <h1 className="flex break-words min-w-[300px] text-3xl font-bold mb-4">
           What to Watch
         </h1>
         <SearchBar
           searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          resetMovies={resetMovies}
+          setQuery={setSearchQuery}
+          setPage={setCurrentPage}
         />
       </div>
       <hr className="border-t border-gray-300 mb-4" />
@@ -79,14 +60,6 @@ const MovieList: React.FC = () => {
           <MovieItem key={movie.id} {...movie} />
         ))}
       </ul>
-
-      {showLoadMore && !isLoading && !error && (
-        <PaginationButton
-          currentPage={currentPage}
-          totalPages={totalPages}
-          handleLoadMore={handleLoadMore}
-        />
-      )}
       {searchQuery && searchResults.length === 0 && !isLoading && !error && (
         <div className="text-center h-80vh mt-8">
           <p className="text-gray-400 text-xl">
@@ -95,6 +68,13 @@ const MovieList: React.FC = () => {
           </p>
         </div>
       )}
+
+      <InfiniteScroll
+        currentPage={currentPage}
+        totalPages={totalPages}
+        setCurrentPage={setCurrentPage}
+        isLoading={isLoading}
+      />
     </>
   );
 };
