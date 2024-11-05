@@ -16,17 +16,22 @@ const MovieList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
-  const { popularMovies, searchResults, isLoading, error, totalPages } =
+  const { popularMovies, searchResults, isLoading, error, totalPages, genres } =
     useSelector((state: RootState) => state.movies);
+
+  const genresLoaded = genres && genres.length > 0;
 
   useEffect(() => {
     if (searchQuery.trim()) {
       dispatch(searchMovies({ query: searchQuery, page: currentPage }));
     } else {
       dispatch(getPopularMovies(currentPage));
+    }
+
+    if (!genresLoaded) {
       dispatch(getGenres());
     }
-  }, [currentPage, dispatch, setCurrentPage, searchQuery]);
+  }, [currentPage, dispatch, setCurrentPage, searchQuery, genresLoaded]);
 
   useEffect(() => {
     if (searchQuery) {

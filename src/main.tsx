@@ -8,7 +8,7 @@ import App from './App.tsx';
 import './index.css';
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+  // <StrictMode>
     <Provider store={store}>
       <BrowserRouter>
         <PersistGate loading={null} persistor={persistor}>
@@ -16,5 +16,5 @@ createRoot(document.getElementById('root')!).render(
         </PersistGate>
       </BrowserRouter>
     </Provider>
-  </StrictMode>
+  // </StrictMode>
 );
