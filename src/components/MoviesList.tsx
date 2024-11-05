@@ -7,7 +7,6 @@ import {
   getPopularMovies,
   searchMovies,
 } from '../redux/movies/moviesApi';
-import { Loader } from './Loader';
 import SearchBar from './SearchBar';
 import MovieItem from './MovieItem';
 import InfiniteScroll from './InfiniteScroll';
@@ -45,7 +44,6 @@ const MovieList: React.FC = () => {
 
   return (
     <>
-      {isLoading && <Loader />}
       <div className="flex flex-col sm:flex-row sm:justify-between">
         <h1 className="flex break-words min-w-[300px] text-3xl font-bold mb-4">
           What to Watch

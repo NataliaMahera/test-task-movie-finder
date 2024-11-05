@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { Loader } from './Loader';
 
 interface InfiniteScrollProps {
   currentPage: number;
@@ -7,14 +8,20 @@ interface InfiniteScrollProps {
   isLoading: boolean;
 }
 
-const InfiniteScroll: React.FC<InfiniteScrollProps> = ({ currentPage, totalPages, setCurrentPage, isLoading }) => {
+const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
+  currentPage,
+  totalPages,
+  setCurrentPage,
+  isLoading,
+}) => {
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-
     const callbackFunction = (entries: IntersectionObserverEntry[]) => {
       if (entries[0].isIntersecting && !isLoading) {
-        setCurrentPage((prevPage) => (prevPage < totalPages ? prevPage + 1 : prevPage));
+        setCurrentPage((prevPage) =>
+          prevPage < totalPages ? prevPage + 1 : prevPage
+        );
       }
     };
 
@@ -38,7 +45,12 @@ const InfiniteScroll: React.FC<InfiniteScrollProps> = ({ currentPage, totalPages
     };
   }, [currentPage, isLoading, setCurrentPage, totalPages]);
 
-  return <div ref={observerRef} />;
+  return (
+    <div>
+      <div ref={observerRef} />
+      {isLoading && <Loader fixed={false} />}
+    </div>
+  );
 };
 
 export default InfiniteScroll;
