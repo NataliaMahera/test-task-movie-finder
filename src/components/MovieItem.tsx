@@ -1,29 +1,38 @@
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { RootState } from '../redux/store';
 import defaultImg from '../assets/default-img.jpg';
 import FavoriteButton, { FavoriteMovie } from './FavoriteButton'; 
+import { Genre } from '../types/types';
 
-const MovieItem: React.FC<FavoriteMovie> = ({
+interface MovieItemProps extends FavoriteMovie {
+  genres: Genre[];
+}
+
+const MovieItem: React.FC<MovieItemProps> = ({
   id,
   title,
   genre_ids,
   release_date,
   vote_average,
   poster_path,
+  genres
 }) => {
-  const { genres } = useSelector((state: RootState) => state.movies);
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate(`/movie/${id}`);
   };
 
-  const getGenreNames = (genreIds: number[]) =>
-    genres
+  const getGenreNames = (genreIds: number[]) => {
+    if (!genres || genres.length === 0) {
+      return 'Unknown';
+    }
+    const genreNames = genres
       .filter((genre) => genreIds.includes(genre.id))
       .map((genre) => genre.name)
       .join(', ');
+
+    return genreNames || 'Unknown';
+  };
 
   return (
     <li
@@ -51,6 +60,7 @@ const MovieItem: React.FC<FavoriteMovie> = ({
           release_date,
           vote_average,
           poster_path,
+          genres
         }}
       />
       <p className="text-gray-200 px-2 py-3  text-sm sm:text-base text-center break-words max-w-full">
