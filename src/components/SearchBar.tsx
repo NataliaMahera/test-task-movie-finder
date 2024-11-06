@@ -1,25 +1,19 @@
 import { useState, useEffect } from 'react';
 import { AiOutlineCloseCircle } from 'react-icons/ai'; // Пакет для іконок
 import { FiSearch } from 'react-icons/fi';
-import { debounce } from "lodash"
-import { useDispatch } from 'react-redux';
-import { clearMovies } from '../redux/movies/moviesSlice';
-import { getPopularMovies } from '../redux/movies/moviesApi';
-import { AppDispatch } from '../redux/store';
-
+import { debounce } from 'lodash';
 interface SearchBarProps {
   searchQuery: string;
   setQuery: (query: string) => void;
-  setPage: React.Dispatch<React.SetStateAction<number>>;
+  clearMovies: () => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
   searchQuery,
   setQuery,
-  setPage
+  clearMovies
 }) => {
   const [inputValue, setInputValue] = useState(searchQuery);
-  const dispatch = useDispatch<AppDispatch>();
 
   const debouncedSetSearchQuery = debounce((value: string) => {
     setQuery(value);
@@ -29,17 +23,15 @@ const SearchBar: React.FC<SearchBarProps> = ({
     if (inputValue) {
       debouncedSetSearchQuery(inputValue);
     } else {
-      setQuery('')
+      setQuery('');
     }
-    
+
     return () => debouncedSetSearchQuery.cancel();
   }, [debouncedSetSearchQuery, inputValue, setQuery]);
 
   const handleReset = () => {
     setInputValue('');
-    setPage(1);
-    dispatch(clearMovies());
-    dispatch(getPopularMovies(1));
+    clearMovies()
   };
 
   return (
