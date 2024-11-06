@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { parseAsInteger, useQueryState } from 'nuqs';
 import {
   getGenres,
@@ -11,10 +11,18 @@ import InfiniteScroll from './InfiniteScroll';
 import { Genre, Movie } from '../types/types';
 
 const MovieList: React.FC = () => {
-  const [currentPage, setCurrentPage] = useQueryState('page', parseAsInteger.withDefault(1));
+  const [currentPage, setCurrentPage] = useQueryState(
+    'page',
+    parseAsInteger.withDefault(1)
+  );
   const [totalPages, setTotalPages] = useState(0);
-  const [searchQuery, setSearchQuery] = useQueryState('search', {defaultValue: ''});
-  const [currentSearchPage, setCurrentSearchPage] = useQueryState('searchPage', parseAsInteger.withDefault(1));
+  const [searchQuery, setSearchQuery] = useQueryState('search', {
+    defaultValue: '',
+  });
+  const [currentSearchPage, setCurrentSearchPage] = useQueryState(
+    'searchPage',
+    parseAsInteger.withDefault(1)
+  );
   const [totalSearchPages, setTotalSearchPages] = useState(0);
   const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
   const [searchResults, setSearchResults] = useState<Movie[]>([]);
@@ -23,17 +31,25 @@ const MovieList: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const genresLoaded = genres && genres.length > 0;
+  const topObserverRef = useRef<HTMLDivElement | null>(null);
+  const bottomObserverRef = useRef<HTMLDivElement | null>(null);
+
+  const updateUniqueMovies = (
+    newMovies: Movie[],
+    prevMovies: Movie[]
+  ): Movie[] => {
+    const existingIds = new Set(prevMovies.map((movie) => movie.id));
+    const uniqueMovies = newMovies.filter((movie) => !existingIds.has(movie.id));
+    return [...prevMovies, ...uniqueMovies];
+  };
+  
 
   const fetchPopularMovies = async (page: number) => {
     setIsLoading(true);
     setError(null);
     try {
       const data = await getPopularMovies(page);
-      setPopularMovies((prevMovies) => {
-        const existingIds = new Set(prevMovies.map((movie: Movie) => movie.id));
-        const newUniqueMovies = data.results.filter((movie: Movie) => !existingIds.has(movie.id));
-        return [...prevMovies, ...newUniqueMovies];
-      });
+      setPopularMovies((prevMovies) => updateUniqueMovies(data.results, prevMovies));
       setTotalPages(data.total_pages);
     } catch (err) {
       setError((err as Error).message);
@@ -47,7 +63,7 @@ const MovieList: React.FC = () => {
     setError(null);
     try {
       const data = await getSearchMovies(query, page);
-      setSearchResults((prevResult) => [...prevResult, ...data.results]);
+      setSearchResults((prevResults) => updateUniqueMovies(data.results, prevResults));
       setTotalSearchPages(data.total_pages);
     } catch (err) {
       setError((err as Error).message);
@@ -59,26 +75,25 @@ const MovieList: React.FC = () => {
   const fetchGenres = async () => {
     try {
       const data = await getGenres();
-      console.log(data);
       setGenres(data);
     } catch (err) {
       setError((err as Error).message);
     }
   };
-  
+
   const clearMovies = useCallback(() => {
-    setPopularMovies([]); 
-    setSearchResults([]); 
+    setPopularMovies([]);
+    setSearchResults([]);
     setCurrentPage(1);
     setCurrentSearchPage(1);
-    setTotalPages(0); 
-    setTotalSearchPages(0); 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    setTotalPages(0);
+    setTotalSearchPages(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (searchQuery.trim()) {
-    fetchSearchResults(searchQuery, currentSearchPage);
+      fetchSearchResults(searchQuery, currentSearchPage);
     } else {
       fetchPopularMovies(currentPage);
     }
@@ -90,7 +105,7 @@ const MovieList: React.FC = () => {
 
   useEffect(() => {
     if (searchQuery) {
-      clearMovies()
+      clearMovies();
     }
   }, [clearMovies, searchQuery]);
 
@@ -114,11 +129,18 @@ const MovieList: React.FC = () => {
       <h2 className="sm:text-2xl text-xl font-semibold text-left mb-4 uppercase">
         {searchQuery ? 'Search Results' : 'MOST POPULAR'}
       </h2>
+
+
+      <div ref={topObserverRef} />
+
       <ul className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-10">
         {(searchQuery ? searchResults : popularMovies).map((movie) => {
           return <MovieItem key={movie.id} {...movie} genres={genres} />;
         })}
       </ul>
+
+      <div ref={bottomObserverRef} />
+
       {searchQuery && searchResults.length === 0 && !isLoading && !error && (
         <div className="text-center h-80vh mt-8">
           <p className="text-gray-400 text-xl">
@@ -127,9 +149,13 @@ const MovieList: React.FC = () => {
           </p>
         </div>
       )}
+
+
       <InfiniteScroll
-        currentPage={searchQuery ? currentSearchPage : currentPage} 
-        totalPages={searchQuery ? totalSearchPages : totalPages} 
+        topObserverRef={topObserverRef}
+        bottomObserverRef={bottomObserverRef}
+        currentPage={searchQuery ? currentSearchPage : currentPage}
+        totalPages={searchQuery ? totalSearchPages : totalPages}
         setCurrentPage={searchQuery ? setCurrentSearchPage : setCurrentPage}
         isLoading={isLoading}
       />
