@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { parseAsInteger, useQueryState } from 'nuqs';
 import {
   getGenres,
   getPopularMovies,
@@ -10,11 +11,11 @@ import InfiniteScroll from './InfiniteScroll';
 import { Genre, Movie } from '../types/types';
 
 const MovieList: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [currentSearchPage, setCurrentSearchPage] = useState(1);
+  const [currentPage, setCurrentPage] = useQueryState('page', parseAsInteger.withDefault(1));
   const [totalPages, setTotalPages] = useState(0);
+  const [searchQuery, setSearchQuery] = useQueryState('search', {defaultValue: ''});
+  const [currentSearchPage, setCurrentSearchPage] = useQueryState('searchPage', parseAsInteger.withDefault(1));
   const [totalSearchPages, setTotalSearchPages] = useState(0);
-  const [searchQuery, setSearchQuery] = useState('');
   const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
   const [searchResults, setSearchResults] = useState<Movie[]>([]);
   const [genres, setGenres] = useState<Genre[]>([]);
@@ -28,7 +29,11 @@ const MovieList: React.FC = () => {
     setError(null);
     try {
       const data = await getPopularMovies(page);
-      setPopularMovies((prevMovies) => [...prevMovies, ...data.results]);
+      setPopularMovies((prevMovies) => {
+        const existingIds = new Set(prevMovies.map((movie: Movie) => movie.id));
+        const newUniqueMovies = data.results.filter((movie: Movie) => !existingIds.has(movie.id));
+        return [...prevMovies, ...newUniqueMovies];
+      });
       setTotalPages(data.total_pages);
     } catch (err) {
       setError((err as Error).message);
@@ -60,10 +65,20 @@ const MovieList: React.FC = () => {
       setError((err as Error).message);
     }
   };
+  
+  const clearMovies = useCallback(() => {
+    setPopularMovies([]); 
+    setSearchResults([]); 
+    setCurrentPage(1);
+    setCurrentSearchPage(1);
+    setTotalPages(0); 
+    setTotalSearchPages(0); 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (searchQuery.trim()) {
-      fetchSearchResults(searchQuery, currentSearchPage);
+    fetchSearchResults(searchQuery, currentSearchPage);
     } else {
       fetchPopularMovies(currentPage);
     }
@@ -72,6 +87,12 @@ const MovieList: React.FC = () => {
       fetchGenres();
     }
   }, [currentPage, currentSearchPage, genresLoaded, searchQuery]);
+
+  useEffect(() => {
+    if (searchQuery) {
+      clearMovies()
+    }
+  }, [clearMovies, searchQuery]);
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -86,7 +107,7 @@ const MovieList: React.FC = () => {
         <SearchBar
           searchQuery={searchQuery}
           setQuery={setSearchQuery}
-          setPage={setCurrentPage}
+          clearMovies={clearMovies}
         />
       </div>
       <hr className="border-t border-gray-300 mb-4" />
@@ -106,7 +127,6 @@ const MovieList: React.FC = () => {
           </p>
         </div>
       )}
-
       <InfiniteScroll
         currentPage={searchQuery ? currentSearchPage : currentPage} 
         totalPages={searchQuery ? totalSearchPages : totalPages} 
