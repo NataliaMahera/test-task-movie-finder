@@ -1,6 +1,7 @@
 import { StrictMode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { NuqsAdapter } from 'nuqs/adapters/react';
 import { createRoot } from 'react-dom/client';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './redux/store.ts';
@@ -12,7 +13,9 @@ createRoot(document.getElementById('root')!).render(
     <Provider store={store}>
       <BrowserRouter>
         <PersistGate loading={null} persistor={persistor}>
-          <App />
+          <NuqsAdapter>
+            <App />
+          </NuqsAdapter>
         </PersistGate>
       </BrowserRouter>
     </Provider>

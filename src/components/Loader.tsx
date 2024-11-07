@@ -1,7 +1,12 @@
+import React from 'react';
 import { ThreeDots } from 'react-loader-spinner';
-export const Loader = () => {
+
+interface LoaderProps {
+  fixed?: boolean;
+}
+export const Loader: React.FC<LoaderProps> = ({ fixed = false }) => {
   return (
-    <div className="fixed inset-0 flex items-center justify-center h-screen z-50">
+    <div className={fixed ? "fixed inset-0 flex items-center justify-center h-screen z-50" : "flex items-center justify-center my-4"}>
       <ThreeDots
         height="80"
         width="80"
