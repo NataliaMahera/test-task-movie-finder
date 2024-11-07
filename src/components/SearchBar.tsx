@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { AiOutlineCloseCircle } from 'react-icons/ai'; // Пакет для іконок
 import { FiSearch } from 'react-icons/fi';
-import { debounce } from 'lodash';
+import useDebounce from '../hooks/useDebounce';
 interface SearchBarProps {
   searchQuery: string;
   setQuery: (query: string) => void;
@@ -15,19 +15,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
 }) => {
   const [inputValue, setInputValue] = useState(searchQuery);
 
-  const debouncedSetSearchQuery = debounce((value: string) => {
-    setQuery(value);
-  }, 1000);
+  const debouncedValue = useDebounce(inputValue);
 
   useEffect(() => {
-    if (inputValue) {
-      debouncedSetSearchQuery(inputValue);
-    } else {
-      setQuery('');
-    }
-
-    return () => debouncedSetSearchQuery.cancel();
-  }, [debouncedSetSearchQuery, inputValue, setQuery]);
+    setQuery(inputValue);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedValue]);
 
   const handleReset = () => {
     setInputValue('');
