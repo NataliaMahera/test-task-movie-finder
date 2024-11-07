@@ -10,6 +10,7 @@ import MovieItem from './MovieItem';
 import InfiniteScroll from './InfiniteScroll';
 import { Genre, Movie } from '../types/types';
 import { updateUniqueMovies } from '../utils/arrayUtils';
+import { Loader } from './Loader';
 
 const MovieList: React.FC = () => {
   const [currentPage, setCurrentPage] = useQueryState(
@@ -33,8 +34,7 @@ const MovieList: React.FC = () => {
 
   const genresLoaded = genres && genres.length > 0;
 
-  // Функція для завантаження фільмів (популярних чи пошукових)
-  const loadMovies = async (page: number, addToTop: boolean) => {
+  const loadMovies = async (page: number) => {
     setIsLoading(true);
     setError(null);
     try {
@@ -42,16 +42,12 @@ const MovieList: React.FC = () => {
         const data = await getSearchMovies(searchQuery, page);
         setTotalSearchPages(data.total_pages);
         setSearchResults((prevResults) =>
-          // addToTop
-          //   ? updateUniqueMovies(data.results, prevResults)
           updateUniqueMovies(data.results, prevResults)
         );
       } else {
         const data = await getPopularMovies(page);
         setTotalPages(data.total_pages);
         setPopularMovies((prevMovies) =>
-          // addToTop
-          //   ? updateUniqueMovies(data.results, prevMovies)
           updateUniqueMovies(data.results, prevMovies)
         );
       }
@@ -61,11 +57,6 @@ const MovieList: React.FC = () => {
       setIsLoading(false);
     }
   };
-
-  // // зміна сторінки для підвантаження фільмів
-  // const handlePageChange = (newPage: number, addToTop: boolean) => {
-  //   loadMovies(newPage, addToTop);
-  // };
 
   const fetchGenres = async () => {
     try {
@@ -83,14 +74,14 @@ const MovieList: React.FC = () => {
     setCurrentSearchPage(1);
     setTotalPages(0);
     setTotalSearchPages(0);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (searchQuery.trim()) {
-      loadMovies(currentSearchPage, false); // Завантаження результатів пошуку
+      loadMovies(currentSearchPage);
     } else {
-      loadMovies(currentPage, false); // Завантаження популярних фільмів
+      loadMovies(currentPage);
     }
 
     if (!genresLoaded) {
@@ -110,6 +101,7 @@ const MovieList: React.FC = () => {
 
   return (
     <>
+      {isLoading && <Loader />}
       <div className="flex flex-col sm:flex-row sm:justify-between">
         <h1 className="flex break-words min-w-[300px] text-3xl font-bold mb-4">
           What to Watch
@@ -125,30 +117,11 @@ const MovieList: React.FC = () => {
         {searchQuery ? 'Search Results' : 'MOST POPULAR'}
       </h2>
 
-      <InfiniteScroll
-        currentPage={searchQuery ? currentSearchPage : currentPage}
-        totalPages={searchQuery ? totalSearchPages : totalPages}
-        setCurrentPage={searchQuery ? setCurrentSearchPage : setCurrentPage}
-        isLoading={isLoading}
-        isTop={true}
-        // onPageChange={handlePageChange}
-      />
-
       <ul className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-10">
         {(searchQuery ? searchResults : popularMovies).map((movie) => {
           return <MovieItem key={movie.id} {...movie} genres={genres} />;
         })}
       </ul>
-
-      <InfiniteScroll
-        currentPage={searchQuery ? currentSearchPage : currentPage}
-        totalPages={searchQuery ? totalSearchPages : totalPages}
-        setCurrentPage={searchQuery ? setCurrentSearchPage : setCurrentPage}
-        isLoading={isLoading}
-        isTop={false}
-        // onPageChange={handlePageChange}
-      />
-
       {searchQuery && searchResults.length === 0 && !isLoading && !error && (
         <div className="text-center h-80vh mt-8">
           <p className="text-gray-400 text-xl">
@@ -157,6 +130,12 @@ const MovieList: React.FC = () => {
           </p>
         </div>
       )}
+      <InfiniteScroll
+        currentPage={searchQuery ? currentSearchPage : currentPage}
+        totalPages={searchQuery ? totalSearchPages : totalPages}
+        setCurrentPage={searchQuery ? setCurrentSearchPage : setCurrentPage}
+        isLoading={isLoading}
+      />
     </>
   );
 };

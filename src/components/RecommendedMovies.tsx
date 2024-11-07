@@ -20,7 +20,10 @@ const RecommendedMovies: React.FC<RecommendedMoviesProps> = ({
   const [recommendations, setRecommendations] = useState<Movie[]>([]);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useQueryState('page', parseAsInteger.withDefault(1));
+  const [currentPage, setCurrentPage] = useQueryState(
+    'page',
+    parseAsInteger.withDefault(1)
+  );
   const [totalPages, setTotalPages] = useState<number>(1);
 
   const navigate = useNavigate();
@@ -99,13 +102,12 @@ const RecommendedMovies: React.FC<RecommendedMoviesProps> = ({
           </li>
         )}
       </ul>
-      
-        <InfiniteScroll
+
+      <InfiniteScroll
         currentPage={currentPage}
         totalPages={totalPages}
         setCurrentPage={setCurrentPage}
         isLoading={isLoading}
-        isTop={false}
       />
     </div>
   );

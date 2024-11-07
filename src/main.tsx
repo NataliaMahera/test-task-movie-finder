@@ -9,15 +9,15 @@ import App from './App.tsx';
 import './index.css';
 
 createRoot(document.getElementById('root')!).render(
-  // <StrictMode>
-  <Provider store={store}>
-    <BrowserRouter>
-      <PersistGate loading={null} persistor={persistor}>
-        <NuqsAdapter>
-          <App />
-        </NuqsAdapter>
-      </PersistGate>
-    </BrowserRouter>
-  </Provider>
-  // </StrictMode>
+  <StrictMode>
+    <Provider store={store}>
+      <BrowserRouter>
+        <PersistGate loading={null} persistor={persistor}>
+          <NuqsAdapter>
+            <App />
+          </NuqsAdapter>
+        </PersistGate>
+      </BrowserRouter>
+    </Provider>
+  </StrictMode>
 );

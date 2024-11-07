@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { AiOutlineCloseCircle } from 'react-icons/ai'; // Пакет для іконок
+import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { FiSearch } from 'react-icons/fi';
 import useDebounce from '../hooks/useDebounce';
 interface SearchBarProps {
@@ -11,7 +11,7 @@ interface SearchBarProps {
 const SearchBar: React.FC<SearchBarProps> = ({
   searchQuery,
   setQuery,
-  clearMovies
+  clearMovies,
 }) => {
   const [inputValue, setInputValue] = useState(searchQuery);
 
@@ -19,12 +19,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   useEffect(() => {
     setQuery(inputValue);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue]);
 
   const handleReset = () => {
     setInputValue('');
-    clearMovies()
+    clearMovies();
   };
 
   return (
