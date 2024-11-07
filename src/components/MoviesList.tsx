@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { parseAsInteger, useQueryState } from 'nuqs';
 import {
   getGenres,
@@ -9,6 +9,7 @@ import SearchBar from './SearchBar';
 import MovieItem from './MovieItem';
 import InfiniteScroll from './InfiniteScroll';
 import { Genre, Movie } from '../types/types';
+import { updateUniqueMovies } from '../utils/arrayUtils';
 
 const MovieList: React.FC = () => {
   const [currentPage, setCurrentPage] = useQueryState(
@@ -31,26 +32,29 @@ const MovieList: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const genresLoaded = genres && genres.length > 0;
-  const topObserverRef = useRef<HTMLDivElement | null>(null);
-  const bottomObserverRef = useRef<HTMLDivElement | null>(null);
 
-  const updateUniqueMovies = (
-    newMovies: Movie[],
-    prevMovies: Movie[]
-  ): Movie[] => {
-    const existingIds = new Set(prevMovies.map((movie) => movie.id));
-    const uniqueMovies = newMovies.filter((movie) => !existingIds.has(movie.id));
-    return [...prevMovies, ...uniqueMovies];
-  };
-  
-
-  const fetchPopularMovies = async (page: number) => {
+  // Функція для завантаження фільмів (популярних чи пошукових)
+  const loadMovies = async (page: number, addToTop: boolean) => {
     setIsLoading(true);
     setError(null);
     try {
-      const data = await getPopularMovies(page);
-      setPopularMovies((prevMovies) => updateUniqueMovies(data.results, prevMovies));
-      setTotalPages(data.total_pages);
+      if (searchQuery.trim()) {
+        const data = await getSearchMovies(searchQuery, page);
+        setTotalSearchPages(data.total_pages);
+        setSearchResults((prevResults) =>
+          // addToTop
+          //   ? updateUniqueMovies(data.results, prevResults)
+          updateUniqueMovies(data.results, prevResults)
+        );
+      } else {
+        const data = await getPopularMovies(page);
+        setTotalPages(data.total_pages);
+        setPopularMovies((prevMovies) =>
+          // addToTop
+          //   ? updateUniqueMovies(data.results, prevMovies)
+          updateUniqueMovies(data.results, prevMovies)
+        );
+      }
     } catch (err) {
       setError((err as Error).message);
     } finally {
@@ -58,19 +62,10 @@ const MovieList: React.FC = () => {
     }
   };
 
-  const fetchSearchResults = async (query: string, page: number) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const data = await getSearchMovies(query, page);
-      setSearchResults((prevResults) => updateUniqueMovies(data.results, prevResults));
-      setTotalSearchPages(data.total_pages);
-    } catch (err) {
-      setError((err as Error).message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // // зміна сторінки для підвантаження фільмів
+  // const handlePageChange = (newPage: number, addToTop: boolean) => {
+  //   loadMovies(newPage, addToTop);
+  // };
 
   const fetchGenres = async () => {
     try {
@@ -88,20 +83,20 @@ const MovieList: React.FC = () => {
     setCurrentSearchPage(1);
     setTotalPages(0);
     setTotalSearchPages(0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (searchQuery.trim()) {
-      fetchSearchResults(searchQuery, currentSearchPage);
+      loadMovies(currentSearchPage, false); // Завантаження результатів пошуку
     } else {
-      fetchPopularMovies(currentPage);
+      loadMovies(currentPage, false); // Завантаження популярних фільмів
     }
 
     if (!genresLoaded) {
       fetchGenres();
     }
-  }, [currentPage, currentSearchPage, genresLoaded, searchQuery]);
+  }, [currentPage, currentSearchPage, searchQuery, genresLoaded]);
 
   useEffect(() => {
     if (searchQuery) {
@@ -130,8 +125,14 @@ const MovieList: React.FC = () => {
         {searchQuery ? 'Search Results' : 'MOST POPULAR'}
       </h2>
 
-
-      <div ref={topObserverRef} />
+      <InfiniteScroll
+        currentPage={searchQuery ? currentSearchPage : currentPage}
+        totalPages={searchQuery ? totalSearchPages : totalPages}
+        setCurrentPage={searchQuery ? setCurrentSearchPage : setCurrentPage}
+        isLoading={isLoading}
+        isTop={true}
+        // onPageChange={handlePageChange}
+      />
 
       <ul className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-10">
         {(searchQuery ? searchResults : popularMovies).map((movie) => {
@@ -139,7 +140,14 @@ const MovieList: React.FC = () => {
         })}
       </ul>
 
-      <div ref={bottomObserverRef} />
+      <InfiniteScroll
+        currentPage={searchQuery ? currentSearchPage : currentPage}
+        totalPages={searchQuery ? totalSearchPages : totalPages}
+        setCurrentPage={searchQuery ? setCurrentSearchPage : setCurrentPage}
+        isLoading={isLoading}
+        isTop={false}
+        // onPageChange={handlePageChange}
+      />
 
       {searchQuery && searchResults.length === 0 && !isLoading && !error && (
         <div className="text-center h-80vh mt-8">
@@ -149,16 +157,6 @@ const MovieList: React.FC = () => {
           </p>
         </div>
       )}
-
-
-      <InfiniteScroll
-        topObserverRef={topObserverRef}
-        bottomObserverRef={bottomObserverRef}
-        currentPage={searchQuery ? currentSearchPage : currentPage}
-        totalPages={searchQuery ? totalSearchPages : totalPages}
-        setCurrentPage={searchQuery ? setCurrentSearchPage : setCurrentPage}
-        isLoading={isLoading}
-      />
     </>
   );
 };

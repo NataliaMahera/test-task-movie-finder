@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { parseAsInteger, useQueryState } from 'nuqs';
 import { Movie } from '../redux/movies/movies.types';
 import { getMovieRecommendations } from '../services/themoviedbAPI';
 import { Loader } from './Loader';
 import defaultImg from '../assets/default-img.jpg';
 import FavoriteButton from './FavoriteButton';
 import InfiniteScroll from './InfiniteScroll';
-import { parseAsInteger, useQueryState } from 'nuqs';
 
 interface RecommendedMoviesProps {
   movieId: string | undefined;
@@ -24,9 +24,6 @@ const RecommendedMovies: React.FC<RecommendedMoviesProps> = ({
   const [totalPages, setTotalPages] = useState<number>(1);
 
   const navigate = useNavigate();
-  
-  const topObserverRef = useRef<HTMLDivElement | null>(null);
-  const bottomObserverRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const fetchRecommendations = async () => {
@@ -104,12 +101,11 @@ const RecommendedMovies: React.FC<RecommendedMoviesProps> = ({
       </ul>
       
         <InfiniteScroll
-        topObserverRef={topObserverRef}
-        bottomObserverRef={bottomObserverRef}
         currentPage={currentPage}
         totalPages={totalPages}
         setCurrentPage={setCurrentPage}
         isLoading={isLoading}
+        isTop={false}
       />
     </div>
   );

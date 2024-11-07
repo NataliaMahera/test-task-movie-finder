@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Loader } from './Loader';
 
 interface InfiniteScrollProps {
@@ -6,8 +6,8 @@ interface InfiniteScrollProps {
   totalPages: number;
   isLoading: boolean;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-  topObserverRef: React.RefObject<HTMLDivElement>;
-  bottomObserverRef: React.RefObject<HTMLDivElement>;
+  isTop?: boolean;
+  // onPageChange: (newPage: number, addToTop: boolean) => void;
 }
 
 const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
@@ -15,55 +15,59 @@ const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
   setCurrentPage,
   isLoading,
   currentPage,
-  topObserverRef,
-  bottomObserverRef,
+  isTop,
+  // onPageChange
 }) => {
-  useEffect(() => {
-    const loadNextPage = (entries: IntersectionObserverEntry[]) => {
-      if (entries[0].isIntersecting && !isLoading && currentPage < totalPages) {
-        setCurrentPage((prevPage) => prevPage + 1);
-      }
-    };
 
-    const loadPrevPage = (entries: IntersectionObserverEntry[]) => {
-      if (entries[0].isIntersecting && !isLoading && currentPage > 1) {
-        setCurrentPage((prevPage) => prevPage - 1);
+  const observerRef = useRef<HTMLDivElement | null>(null);
+  
+  useEffect(() => {
+    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+      if (entries[0].isIntersecting && !isLoading) {
+        if (isTop && currentPage > 1) {
+          setCurrentPage((prevPage) => Math.max(1, prevPage - 1));
+        } else if (!isTop && currentPage < totalPages) {
+          setCurrentPage((prevPage) => prevPage + 1);
+        }
       }
+      
+      // if (entries[0].isIntersecting && !isLoading) {
+      //   if (isTop && currentPage > 1) {
+      //     const newPage = currentPage - 1;
+      //     setCurrentPage(newPage);
+      //     onPageChange(newPage, true); // Завантаження зверху
+      //   } else if (!isTop && currentPage < totalPages) {
+      //     const newPage = currentPage + 1;
+      //     setCurrentPage(newPage);
+      //     onPageChange(newPage, false); // Завантаження знизу
+      //   }
+      // }
     };
 
     const options = {
       root: null,
       rootMargin: '50px',
-      threshold: 0.25,
+      threshold: 1,
     };
 
-    const bottomObserver = new IntersectionObserver(loadNextPage, options);
-    const topObserver = new IntersectionObserver(loadPrevPage, options);
+    const observer = new IntersectionObserver(handleIntersect, options);
+    const currentRef = observerRef.current;
 
-    const topRef = topObserverRef.current;
-    const bottomRef = bottomObserverRef.current;
-
-    if (bottomRef) {
-      bottomObserver.observe(bottomRef);
-    }
-    if (topRef) {
-      topObserver.observe(topRef);
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (bottomRef) bottomObserver.unobserve(bottomRef);
-      if (topRef) topObserver.unobserve(topRef);
+      if (currentRef) observer.unobserve(currentRef);
     };
-  }, [
-    bottomObserverRef,
-    currentPage,
-    isLoading,
-    setCurrentPage,
-    topObserverRef,
-    totalPages,
-  ]);
+  }, [currentPage, isLoading, isTop, observerRef]);
 
-  return <>{isLoading && <Loader fixed={false} />}</>;
+  return (
+    <>
+      {isLoading && <Loader fixed={false} />}
+      <div ref={observerRef} />
+    </>
+  );
 };
 
 export default InfiniteScroll;
