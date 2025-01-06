@@ -6,11 +6,12 @@ import {
   deleteFromFavorites,
 } from '../redux/favorites/favoritesSlice';
 import { RootState } from '../redux/store';
-import { Movie } from '../redux/movies/movies.types';
+import { Movie } from '../types/types';
+
 
 export type FavoriteMovie = Pick<
   Movie,
-  'id' | 'title' | 'poster_path' | 'release_date' | 'vote_average' | 'genre_ids'
+  'id' | 'title' | 'poster_path' | 'release_date' | 'vote_average' | 'genre_ids' | 'genres'
 >;
 interface FavoriteButtonProps {
   movie: FavoriteMovie;

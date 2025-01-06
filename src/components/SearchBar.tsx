@@ -1,45 +1,30 @@
 import { useState, useEffect } from 'react';
-import { AiOutlineCloseCircle } from 'react-icons/ai'; // Пакет для іконок
+import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { FiSearch } from 'react-icons/fi';
-import { debounce } from "lodash"
-import { useDispatch } from 'react-redux';
-import { clearMovies } from '../redux/movies/moviesSlice';
-import { getPopularMovies } from '../redux/movies/moviesApi';
-import { AppDispatch } from '../redux/store';
-
+import useDebounce from '../hooks/useDebounce';
 interface SearchBarProps {
   searchQuery: string;
   setQuery: (query: string) => void;
-  setPage: React.Dispatch<React.SetStateAction<number>>;
+  clearMovies: () => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
   searchQuery,
   setQuery,
-  setPage
+  clearMovies,
 }) => {
   const [inputValue, setInputValue] = useState(searchQuery);
-  const dispatch = useDispatch<AppDispatch>();
 
-  const debouncedSetSearchQuery = debounce((value: string) => {
-    setQuery(value);
-  }, 1000);
+  const debouncedValue = useDebounce(inputValue);
 
   useEffect(() => {
-    if (inputValue) {
-      debouncedSetSearchQuery(inputValue);
-    } else {
-      setQuery('')
-    }
-    
-    return () => debouncedSetSearchQuery.cancel();
-  }, [debouncedSetSearchQuery, inputValue, setQuery]);
+    setQuery(inputValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedValue]);
 
   const handleReset = () => {
     setInputValue('');
-    setPage(1);
-    dispatch(clearMovies());
-    dispatch(getPopularMovies(1));
+    clearMovies();
   };
 
   return (

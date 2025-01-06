@@ -1,41 +1,102 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../redux/store';
-import { clearMovies } from '../redux/movies/moviesSlice';
+import { useCallback, useEffect, useState } from 'react';
+import { parseAsInteger, useQueryState } from 'nuqs';
 import {
   getGenres,
   getPopularMovies,
-  searchMovies,
-} from '../redux/movies/moviesApi';
-import { Loader } from './Loader';
+  getSearchMovies,
+} from '../services/themoviedbAPI';
 import SearchBar from './SearchBar';
 import MovieItem from './MovieItem';
 import InfiniteScroll from './InfiniteScroll';
+import { Genre, Movie } from '../types/types';
+import { updateUniqueMovies } from '../utils/arrayUtils';
+import { Loader } from './Loader';
 
 const MovieList: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState('');
-  const { popularMovies, searchResults, isLoading, error, totalPages } =
-    useSelector((state: RootState) => state.movies);
+  const [currentPage, setCurrentPage] = useQueryState(
+    'page',
+    parseAsInteger.withDefault(1)
+  );
+  const [totalPages, setTotalPages] = useState(0);
+  const [searchQuery, setSearchQuery] = useQueryState('search', {
+    defaultValue: '',
+  });
+  const [currentSearchPage, setCurrentSearchPage] = useQueryState(
+    'searchPage',
+    parseAsInteger.withDefault(1)
+  );
+  const [totalSearchPages, setTotalSearchPages] = useState(0);
+  const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
+  const [searchResults, setSearchResults] = useState<Movie[]>([]);
+  const [genres, setGenres] = useState<Genre[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const genresLoaded = genres && genres.length > 0;
+
+  const loadMovies = async (page: number) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      if (searchQuery.trim()) {
+        const data = await getSearchMovies(searchQuery, page);
+        setTotalSearchPages(data.total_pages);
+        setSearchResults((prevResults) =>
+          updateUniqueMovies(data.results, prevResults)
+        );
+      } else {
+        const data = await getPopularMovies(page);
+        setTotalPages(data.total_pages);
+        setPopularMovies((prevMovies) =>
+          updateUniqueMovies(data.results, prevMovies)
+        );
+      }
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchGenres = async () => {
+    try {
+      const data = await getGenres();
+      setGenres(data);
+    } catch (err) {
+      setError((err as Error).message);
+    }
+  };
+
+  const clearMovies = useCallback(() => {
+    setPopularMovies([]);
+    setSearchResults([]);
+    setCurrentPage(1);
+    setCurrentSearchPage(1);
+    setTotalPages(0);
+    setTotalSearchPages(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (searchQuery.trim()) {
-      dispatch(searchMovies({ query: searchQuery, page: currentPage }));
+      loadMovies(currentSearchPage);
     } else {
-      dispatch(getPopularMovies(currentPage));
-      dispatch(getGenres());
+      loadMovies(currentPage);
     }
-  }, [currentPage, dispatch, setCurrentPage, searchQuery]);
+
+    if (!genresLoaded) {
+      fetchGenres();
+    }
+  }, [currentPage, currentSearchPage, searchQuery, genresLoaded]);
 
   useEffect(() => {
     if (searchQuery) {
-      dispatch(clearMovies());
+      clearMovies();
     }
-  }, [searchQuery, dispatch]);
+  }, [clearMovies, searchQuery]);
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <div>Error: {error}</div>;
   }
 
   return (
@@ -48,17 +109,18 @@ const MovieList: React.FC = () => {
         <SearchBar
           searchQuery={searchQuery}
           setQuery={setSearchQuery}
-          setPage={setCurrentPage}
+          clearMovies={clearMovies}
         />
       </div>
       <hr className="border-t border-gray-300 mb-4" />
       <h2 className="sm:text-2xl text-xl font-semibold text-left mb-4 uppercase">
         {searchQuery ? 'Search Results' : 'MOST POPULAR'}
       </h2>
+
       <ul className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-10">
-        {(searchQuery ? searchResults : popularMovies).map((movie) => (
-          <MovieItem key={movie.id} {...movie} />
-        ))}
+        {(searchQuery ? searchResults : popularMovies).map((movie) => {
+          return <MovieItem key={movie.id} {...movie} genres={genres} />;
+        })}
       </ul>
       {searchQuery && searchResults.length === 0 && !isLoading && !error && (
         <div className="text-center h-80vh mt-8">
@@ -68,11 +130,10 @@ const MovieList: React.FC = () => {
           </p>
         </div>
       )}
-
       <InfiniteScroll
-        currentPage={currentPage}
-        totalPages={totalPages}
-        setCurrentPage={setCurrentPage}
+        currentPage={searchQuery ? currentSearchPage : currentPage}
+        totalPages={searchQuery ? totalSearchPages : totalPages}
+        setCurrentPage={searchQuery ? setCurrentSearchPage : setCurrentPage}
         isLoading={isLoading}
       />
     </>
